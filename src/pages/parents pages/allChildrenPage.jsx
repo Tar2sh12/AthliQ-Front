@@ -29,14 +29,20 @@ const PlayersList = () => {
             headers: {
               Authorization: `Bearer ${token.token}`,
             },
-          })
-          .then((response) => {
+          }).then((response) => {
             console.log(response.data);
             if (response.data.statusCode === 200) {
-              setPlayers(response.data.value.data.children);
+              if(response.data.value===undefined){
+                setPlayers(response.data.data.children);
+                setTotalPages(Math.ceil(response.data.data.totalCount / 6));
+              }
+              else if(response.data.value!==undefined){
+                setPlayers(response.data.value.data.children);
+                setTotalPages(Math.ceil(response.data.value.data.totalCount / 6));
+              }
+              
               //console.log(response.data.value.data.totalCount);
-
-              setTotalPages(Math.ceil(response.data.value.data.totalCount / 6));
+              
             }
           });
 
@@ -67,35 +73,35 @@ const PlayersList = () => {
     }
   };
 
-  const handleEvaluateButton = async (child) => {
-    try {
-      const token = getAuthToken();
+  // const handleEvaluateButton = async (child) => {
+  //   try {
+  //     const token = getAuthToken();
 
-      await axios
-        .get(
-          `http://localhost:5155/api/Child/EvaluteChildResult?childId=${child.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token.token}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.data.statusCode === 200) {
-            console.log(response);
-            if (response.data.message === "Retreived Result succesfully") {
-              toast.success(`${child.name}'s result evaluated successfully`);
-            }
-            else{
-              toast.error(response.data.message);
-            }
-          }
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     await axios
+  //       .get(
+  //         `http://localhost:5155/api/Child/EvaluteChildResult?childId=${child.id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token.token}`,
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log(response);
+  //         if (response.data.statusCode === 200) {
+  //           console.log(response);
+  //           if (response.data.message === "Retreived Result succesfully") {
+  //             toast.success(`${child.name}'s result evaluated successfully`);
+  //           }
+  //           else{
+  //             toast.error(response.data.message);
+  //           }
+  //         }
+  //       });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   if (loading) {
     return (
