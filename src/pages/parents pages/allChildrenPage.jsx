@@ -3,7 +3,7 @@ import axios from "axios";
 import { getAuthToken } from "../../services/auth";
 import Header from "../../components/header";
 import Footer from "../../components/Footer";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 
 const PlayersList = () => {
@@ -12,54 +12,68 @@ const PlayersList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  // Debounce search term
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
+
+  // Reset to first page when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const token = getAuthToken();
-        console.log(token.token);
-
         setLoading(true);
+
         await axios
           .get(`http://localhost:5155/api/Child/ViewAllChildren`, {
             params: {
               pageSize: 6,
               pageIndex: currentPage,
+              search: debouncedSearchTerm, // Add search parameter
             },
             headers: {
               Authorization: `Bearer ${token.token}`,
             },
-          }).then((response) => {
-            console.log(response.data);
+          })
+          .then((response) => {
             if (response.data.statusCode === 200) {
-              if(response.data.value===undefined){
-                setPlayers(response.data.data.children);
-                setTotalPages(Math.ceil(response.data.data.totalCount / 6));
-              }
-              else if(response.data.value!==undefined){
-                setPlayers(response.data.value.data.children);
-                setTotalPages(Math.ceil(response.data.value.data.totalCount / 6));
-              }
+              //console.log(response);
               
-              //console.log(response.data.value.data.totalCount);
+              const data = response.data.value?.data || response.data.data;
+              console.log(data);
               
+              setPlayers(data.children);
+              if(searchTerm===""){ setTotalPages(Math.ceil(data.totalCount / 6));}
+              else{setTotalPages(Math.ceil(data.children.length / 6));}
+            }
+            else{
+              setError(response.data.message);
             }
           });
-
-        //setTotalPages(Math.ceil(response.data.value.data.totalCount / 6));
-        // console.log(response.data.value.data.totalCount );
 
         setLoading(false);
       } catch (err) {
         console.log(err);
-
         setError("Failed to fetch players");
         setLoading(false);
       }
     };
 
     fetchPlayers();
-  }, [currentPage]);
+  }, [currentPage, debouncedSearchTerm]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -103,6 +117,20 @@ const PlayersList = () => {
   //   }
   // };
 
+
+    // Add search input JSX
+    const searchBar = (
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search players by name..."
+          className="w-full p-2 border rounded-lg"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+    );
+
   if (loading) {
     return (
       <>
@@ -134,6 +162,7 @@ const PlayersList = () => {
               <h2 className="text-2xl font-bold mb-4 text-gray-700">
                 Players List
               </h2>
+              {searchBar}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="text-center mt-8 text-red-600">{error}</div>
               </div>
@@ -169,6 +198,7 @@ const PlayersList = () => {
               <h2 className="text-2xl font-bold mb-4 text-gray-700">
                 Players List
               </h2>
+              {searchBar}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {players.map((player) => (
                   <div

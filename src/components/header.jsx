@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { removeAuthToken } from "../services/auth";
 import { useNavigate } from "react-router-dom";
-
+import logo from "../assets/logo.jpg"
 const Header = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -39,7 +39,12 @@ const Header = () => {
     <>
       <header className="bg-green-600 text-white py-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center px-4">
-          <h1 className="text-xl font-bold">ChampionMaker</h1>
+        <img 
+        style={{height:"80px",width:"200px" }}
+              src={logo} 
+              alt="Company Logo" 
+              className="h-12 mr-4 cursor-pointer"/>
+          {/* <h1 className="text-xl font-bold">ChampionMaker</h1> */}
           <nav className="flex space-x-4">
             <a onClick={handleCreateChild} href="" className="text-white hover:text-gray-300">
               Create Child

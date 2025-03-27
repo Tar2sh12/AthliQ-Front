@@ -7,12 +7,21 @@ import "react-toastify/ReactToastify.css";
 import axios from "axios";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
+
+//test gifs
+import SitandReachFlexibility from "../../assets/tests-gif/Sit-and-Reach-Flexibility.gif";
+import MedicineBallPush1kgFromStandingPosition from "../../assets/tests-gif/Medicine Ball Push (1 kg) from Standing Position.gif"
+import OneLegStand from "../../assets/tests-gif/One-Leg-Stand.png"
+import StandingLongJumpTest from "../../assets/tests-gif/Standing-Long-Jump-Test.webp"
+import SitUpTest30seconds from "../../assets/tests-gif/Sit-up Test (30 seconds).jpg"
+
 const AddPlayerForm = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [currentTC, setCurrentTC] = useState(0);
   const [tests, setTests] = useState([]);
-  const [childId,setChildId]= useState(-1);
+  const [childId, setChildId] = useState(-1);
+  const [err, setErr] = useState("");
   const [formData, setFormData] = useState({
     Name: "",
     Gender: "",
@@ -31,6 +40,23 @@ const AddPlayerForm = () => {
     tests: [],
   });
 
+  const testRanges = [
+    {},
+    { testName: "Standing Long Jump Test (in cm)", max: 140, min: 65 , gif:StandingLongJumpTest},
+    { testName: "Sit-and-Reach Flexibility (in cm)", max: 10, min: 0 , gif:SitandReachFlexibility},
+    { testName: "One-Leg Stand (30 seconds)", max: 10, min: 2.49 , gif:OneLegStand},
+    { testName: "Sit-up Test (30 seconds)", max: 22, min: 5.48 , gif:SitUpTest30seconds},
+    {
+      testName: "Medicine Ball Push (1 kg) from Standing Position",
+      max: 335,
+      min: 125,
+      gif:MedicineBallPush1kgFromStandingPosition
+    },
+    { testName: "Straight-Line Walking (3 meters)", max: 9, min: 3 },
+    { testName: "30-Meter Sprint (in seconds)", max: 10.295, min: 5.485 },
+    { testName: "15-Meter Zigzag Run (in seconds)", max: 9.6, min: 5.1 },
+  ];
+
   useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -47,6 +73,7 @@ const AddPlayerForm = () => {
             tests: res.data.data.map((test) => ({
               TestId: test.id,
               TestResult: "",
+              name: test.name,
             })),
           }));
         }
@@ -55,7 +82,7 @@ const AddPlayerForm = () => {
       }
     };
     fetchTests();
-  }, []);
+  }, [err]);
   const [errors, setErrors] = useState({});
   // Add sports state at the top of your component
   const [sports, setSports] = useState([]);
@@ -101,8 +128,8 @@ const AddPlayerForm = () => {
     if (valid === true) {
       console.log("valid");
     }
-    const newErrors = {};
-
+    var newErrors = {};
+    var CopyErrors = {};
     switch (currentStep) {
       case 0:
         if (!formData.Name) newErrors.Name = "Name is required";
@@ -127,14 +154,25 @@ const AddPlayerForm = () => {
       case 3:
         if (!formData.Height) newErrors.Height = "Height is required";
         if (!formData.Weight) newErrors.Weight = "Weight is required";
+        if (!formData.FrontImage)
+          newErrors.FrontImage = "Front image is required";
+        if (!formData.SideImage) newErrors.SideImage = "Back image is required";
         break;
       case 4:
+        var counter = 0;
         formData.tests.forEach((test, index) => {
           if (!test.TestResult) {
-            newErrors[`test${index}`] = "Test result is required";
-            valid = false;
+            CopyErrors[`test${index}`] = "Test result is required";
+            counter++;
           }
         });
+        if (counter % 2 === 0) {
+          errors.length = 0;
+          valid = true;
+        } else {
+          newErrors = CopyErrors;
+          valid = false;
+        }
         break;
       default:
         break;
@@ -166,17 +204,21 @@ const AddPlayerForm = () => {
 
   // Modified submission handler in handleNext
   const handleNext = async () => {
-    if(currentStep===steps.length-2&&currentTC===testsCategories.length-1) {
-      console.log({message:"hello"});
-      
+    if (
+      currentStep === steps.length - 2 &&
+      currentTC === testsCategories.length - 1
+    ) {
+      console.log({ message: "hello", valid: validateStep() });
+
       const token = getAuthToken();
       const formDataToSend = new FormData();
       // Append tests
       formData.tests.forEach((test, index) => {
-        formDataToSend.append(
-          `CreateChildTestDtos[${index}].TestId`,
-          test.TestId
-        );
+        if (test.TestResult)
+          formDataToSend.append(
+            `CreateChildTestDtos[${index}].TestId`,
+            test.TestId
+          );
         formDataToSend.append(
           `CreateChildTestDtos[${index}].TestResult`,
           test.TestResult
@@ -224,26 +266,74 @@ const AddPlayerForm = () => {
         .then((res) => {
           if (res.data.statusCode === 201) {
             console.log(res.data.data);
-            
-            setChildId(res.data.data.childId)
-            console.log({childId});
-            setCurrentStep((prev)=>prev+1);
+
+            setChildId(res.data.data.childId);
+            console.log({ childId });
+            setCurrentStep((prev) => prev + 1);
             toast.success("Player added successfully");
           } else {
             toast.error(res.data.message);
+            setErr(res.data.message);
+            console.error(res.data.message);
+            setFormData({
+              Name: "",
+              Gender: "",
+              DateOfBirth: "",
+              SchoolName: "",
+              ClubName: "",
+              IsAgreeDoctorApproval: false,
+              IsNormalBloodTest: false,
+              SportHistoryId: "",
+              ParentSportHistoryId: "",
+              SportPreferenceId: "",
+              Height: "",
+              Weight: "",
+              FrontImage: "",
+              SideImage: "",
+              tests: [],
+            });
+            setCurrentStep(0);
+            setCurrentTC(0);
           }
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
+
           toast.error("Failed to add player");
+          setErr(error);
+          console.error(error);
+          setFormData({
+            Name: "",
+            Gender: "",
+            DateOfBirth: "",
+            SchoolName: "",
+            ClubName: "",
+            IsAgreeDoctorApproval: false,
+            IsNormalBloodTest: false,
+            SportHistoryId: "",
+            ParentSportHistoryId: "",
+            SportPreferenceId: "",
+            Height: "",
+            Weight: "",
+            FrontImage: "",
+            SideImage: "",
+            tests: [],
+          });
+          setCurrentStep(0);
+          setCurrentTC(0);
         });
     }
     if (currentStep === 4) {
-      setCurrentTC((prev) => {
-        if (prev < testsCategories.length -1) {
-          return prev + 1;
-        }
-      });
+      console.log(validateStep(), errors);
+
+      if (validateStep()) {
+        setCurrentTC((prev) => {
+          if (prev < testsCategories.length - 1) {
+            return prev + 1;
+          }
+        });
+      }
+
       console.log(currentTC, currentStep);
 
       return;
@@ -252,7 +342,6 @@ const AddPlayerForm = () => {
     if (currentStep < steps.length - 2) {
       setCurrentStep((prev) => prev + 1);
     }
-    
   };
   const handlePrev = () => {
     if (currentStep === 4) {
@@ -267,7 +356,9 @@ const AddPlayerForm = () => {
       }
     } else if (currentStep > 0) setCurrentStep((prev) => prev - 1);
   };
-  const handleTestChange = (index, value) => {
+  const handleTestChange = (index, value, min, max) => {
+    console.log(index, value, min, max);
+
     setFormData((prev) => {
       const newTests = [...prev.tests];
       newTests[index] = { ...newTests[index], TestResult: value };
@@ -275,8 +366,7 @@ const AddPlayerForm = () => {
     });
   };
 
-
-  const handleEvaluateButton=async()=>{
+  const handleEvaluateButton = async () => {
     console.log(childId);
     try {
       const token = getAuthToken();
@@ -296,10 +386,9 @@ const AddPlayerForm = () => {
             console.log(response);
             if (response.data.message === "Retreived Result succesfully") {
               toast.success(`${FormData.name}'s result evaluated successfully`);
-              
+
               navigate("/allchildren");
-            }
-            else{
+            } else {
               toast.error(response.data.message);
             }
           }
@@ -307,7 +396,7 @@ const AddPlayerForm = () => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
   return (
     <>
       <div class="min-h-screen flex flex-col">
@@ -679,45 +768,70 @@ const AddPlayerForm = () => {
                             test,
                             index // Use formData.tests instead of tests
                           ) => {
-
                             if (
                               currentStep === steps.length - 2 &&
-                    currentTC <testsCategories.length &&
+                              currentTC < testsCategories.length &&
                               testsCategories[currentTC].id ===
-                              tests.find((t) => t.id === test.TestId)
-                                ?.categoryId
+                                tests.find((t) => t.id === test.TestId)
+                                  ?.categoryId
                             ) {
                               return (
-                                <div key={test.TestId} className="mb-4">
-                                  {" "}
-                                  <label className="block text-gray-700 mb-2">
-                                    {tests.find((t) => t.id === test.TestId)
-                                      ?.id}{" "}{
-                                      tests.find((t) => t.id === test.TestId)
-                                        ?.name
-                                    }{" "}
-                                    *
-                                  </label>
-                                  <p className="text-sm text-gray-500 mb-2">
-                                    {
-                                      tests.find((t) => t.id === test.TestId)
-                                        ?.description
-                                    }
-                                  </p>
-                                  <input
-                                    type="number"
-                                    value={test.TestResult}
-                                    onChange={(e) =>
-                                      handleTestChange(index, e.target.value)
-                                    }
-                                    className="w-full p-2 border rounded-lg"
-                                  />
-                                  {errors[`test${index}`] && (
-                                    <span className="text-red-500 text-sm">
-                                      {errors[`test${index}`]}
-                                    </span>
-                                  )}
-                                </div>
+                                <>
+                               
+                                  <div key={test.TestId} className="mb-4">
+                                    {" "}
+                                    <label className="block text-gray-700 mb-2">
+                                      {
+                                        tests.find((t) => t.id === test.TestId)
+                                          ?.id
+                                      }{" "}
+                                      {
+                                        tests.find((t) => t.id === test.TestId)
+                                          ?.name
+                                      }{" "}
+                                      *
+                                    </label>
+                                    <p className="text-sm text-gray-500 mb-2">
+                                      {
+                                        tests.find((t) => t.id === test.TestId)
+                                          ?.description
+                                      }
+                                    </p>
+                                    {(testRanges[test.TestId].gif!==undefined && testRanges[test.TestId].gif!==null)&&
+                                    <div className="flex items-center space-x-4">
+                                      <div className="w-1/2">
+                                        <img
+                                          src={testRanges[test.TestId].gif}
+                                          alt="Sit-Ups"
+                                          className="w-48 h-32 rounded-lg shadow"
+                                        />
+                                        <p className="text-sm text-gray-600 mt-2">
+                                          How to do the test correctly.
+                                        </p>
+                                      </div>
+                                    </div>}
+                                    <input
+                                      type="number"
+                                      value={test.TestResult}
+                                      max={testRanges[test.TestId].max}
+                                      min={testRanges[test.TestId].min}
+                                      onChange={(e) =>
+                                        handleTestChange(
+                                          index,
+                                          e.target.value,
+                                          testRanges[test.TestId].min,
+                                          testRanges[test.TestId].max
+                                        )
+                                      }
+                                      className="w-full p-2 border rounded-lg"
+                                    />
+                                    {errors[`test${index}`] && (
+                                      <span className="text-red-500 text-sm">
+                                        {errors[`test${index}`]}
+                                      </span>
+                                    )}
+                                  </div>
+                                </>
                               );
                             }
                           }
@@ -726,24 +840,21 @@ const AddPlayerForm = () => {
                     </>
                   )}
 
-
                   {currentStep === 5 && (
                     <>
-                    
-
-                    <button
-                          onClick={handleEvaluateButton}
-                          className="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition duration-300"
-                        >
-                          <i className="fas fa-medal"></i> Evaluate
-                        </button>
+                      <button
+                        onClick={handleEvaluateButton}
+                        className="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition duration-300"
+                      >
+                        <i className="fas fa-medal"></i> Evaluate
+                      </button>
                     </>
                   )}
                 </div>
 
                 {/* Navigation Buttons */}
                 <div className="flex justify-between mt-8">
-                  {(currentStep === 0|| currentStep===5) ? null : (
+                  {currentStep === 0 || currentStep === 5 ? null : (
                     <button
                       onClick={handlePrev}
                       className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"

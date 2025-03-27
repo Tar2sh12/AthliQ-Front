@@ -5,6 +5,7 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import { getAuthToken, setAuthToken } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.jpg";
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -160,7 +161,11 @@ export default function AuthPage() {
       <Overlay>
         <header className="bg-green-600 text-white py-4 shadow-md">
           <div className="container mx-auto flex justify-between items-center px-4">
-            <h1 className="text-xl font-bold">ChampionMaker</h1>
+          <img 
+        style={{height:"80px",width:"200px" }}
+              src={logo} 
+              alt="Company Logo" 
+              className="h-12 mr-4 cursor-pointer"/>
             <nav className="flex space-x-4">
               <a href="#" className="text-white hover:text-gray-300">
                 Home
