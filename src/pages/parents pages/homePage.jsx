@@ -10,11 +10,149 @@ import { useNavigate } from "react-router-dom";
 
 //test gifs
 import SitandReachFlexibility from "../../assets/tests-gif/Sit-and-Reach-Flexibility.gif";
-import MedicineBallPush1kgFromStandingPosition from "../../assets/tests-gif/Medicine Ball Push (1 kg) from Standing Position.gif"
-import OneLegStand from "../../assets/tests-gif/One-Leg-Stand.png"
-import StandingLongJumpTest from "../../assets/tests-gif/Standing-Long-Jump-Test.webp"
-import SitUpTest30seconds from "../../assets/tests-gif/Sit-up Test (30 seconds).jpg"
+import MedicineBallPush1kgFromStandingPosition from "../../assets/tests-gif/Medicine Ball Push (1 kg) from Standing Position.gif";
+import OneLegStand from "../../assets/tests-gif/One-Leg-Stand.png";
+import StandingLongJumpTest from "../../assets/tests-gif/Standing-Long-Jump-Test.webp";
+import SitUpTest30seconds from "../../assets/tests-gif/Sit-up Test (30 seconds).jpg";
+import styled from "styled-components";
+import { small } from "framer-motion/client";
 
+
+const Overlay = styled.div`
+  display: ${({ show }) => (show ? "flex" : "none")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  opacity: ${({ show }) => (show ? 1 : 0)};
+  transition: opacity 0.3s ease;
+`;
+
+const PopupBox = styled.div`
+  background: #fff;
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  width: 500px;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeInUp 0.5s ease-out forwards;
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+
+const SubmitButton = styled.button`
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: green;
+  color: #fff;
+  &:hover {
+    background-color: #4caf50;
+  }
+`;
+
+const CloseButton = styled(SubmitButton)`
+  margin-top: 12px;
+  background-color: #e74c3c;
+
+  &:hover {
+    background-color: #c0392b;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`;
+
+const Svg = styled.svg`
+  display: block;
+  max-width: 80%;
+  max-height: 1000px;
+  position: relative;
+`;
+
+const Circle = styled.path`
+  stroke: #4cc790;
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+
+  @keyframes progress {
+    0% {
+      stroke-dasharray: 0 100;
+    }
+  }
+`;
+
+const Circle2 = styled.path`
+  stroke: rgb(189, 199, 76);
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+
+  @keyframes progress {
+    0% {
+      stroke-dasharray: 0 100;
+    }
+  }
+`;
+const Circle3 = styled.path`
+  stroke: rgb(199, 76, 76);
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+
+  @keyframes progress {
+    0% {
+      stroke-dasharray: 0 100;
+    }
+  }
+`;
+
+const Circle4 = styled.path`
+  stroke: rgb(0, 188, 13);
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+
+  @keyframes progress {
+    0% {
+      stroke-dasharray: 0 100;
+    }
+  }
+`;
+
+const Text = styled.text`
+  font-size: 6px;
+  fill: #4cc790;
+  font-weight: bold;
+  text-anchor: middle;
+  dominant-baseline: central;
+`;
 const AddPlayerForm = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
@@ -22,6 +160,23 @@ const AddPlayerForm = () => {
   const [tests, setTests] = useState([]);
   const [childId, setChildId] = useState(-1);
   const [err, setErr] = useState("");
+  const [isEvaluatedSuccessfully, setIsEvaluatedSuccessfully] = useState(false);
+  const [childScores, setChildScores] = useState([]);
+  const [finalResult, setFinalResult] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [evaluateResponse, setEvaluateResponse] = useState(null);
+  const categorizedScores = {
+    largest:{num:undefined,Circle},
+    largeMid:{num:undefined,Circle2},
+    smallMid:{num:undefined,Circle3},
+    smallest:{num:undefined,Circle4}
+
+};
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+    console.log(childScores);
+    
+  };
   const [formData, setFormData] = useState({
     Name: "",
     Gender: "",
@@ -42,15 +197,35 @@ const AddPlayerForm = () => {
 
   const testRanges = [
     {},
-    { testName: "Standing Long Jump Test (in cm)", max: 140, min: 65 , gif:StandingLongJumpTest},
-    { testName: "Sit-and-Reach Flexibility (in cm)", max: 10, min: 0 , gif:SitandReachFlexibility},
-    { testName: "One-Leg Stand (30 seconds)", max: 10, min: 2.49 , gif:OneLegStand},
-    { testName: "Sit-up Test (30 seconds)", max: 22, min: 5.48 , gif:SitUpTest30seconds},
+    {
+      testName: "Standing Long Jump Test (in cm)",
+      max: 140,
+      min: 65,
+      gif: StandingLongJumpTest,
+    },
+    {
+      testName: "Sit-and-Reach Flexibility (in cm)",
+      max: 10,
+      min: 0,
+      gif: SitandReachFlexibility,
+    },
+    {
+      testName: "One-Leg Stand (30 seconds)",
+      max: 10,
+      min: 2.49,
+      gif: OneLegStand,
+    },
+    {
+      testName: "Sit-up Test (30 seconds)",
+      max: 22,
+      min: 5.48,
+      gif: SitUpTest30seconds,
+    },
     {
       testName: "Medicine Ball Push (1 kg) from Standing Position",
       max: 335,
       min: 125,
-      gif:MedicineBallPush1kgFromStandingPosition
+      gif: MedicineBallPush1kgFromStandingPosition,
     },
     { testName: "Straight-Line Walking (3 meters)", max: 9, min: 3 },
     { testName: "30-Meter Sprint (in seconds)", max: 10.295, min: 5.485 },
@@ -368,33 +543,60 @@ const AddPlayerForm = () => {
 
   const handleEvaluateButton = async () => {
     console.log(childId);
-    try {
-      const token = getAuthToken();
+    if (!isEvaluatedSuccessfully) {
+      try {
+        const token = getAuthToken();
 
-      await axios
-        .get(
-          `http://localhost:5155/api/Child/EvaluteChildResult?childId=${childId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token.token}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.data.statusCode === 200) {
-            console.log(response);
-            if (response.data.message === "Retreived Result succesfully") {
-              toast.success(`${FormData.name}'s result evaluated successfully`);
-
-              navigate("/allchildren");
-            } else {
-              toast.error(response.data.message);
+        await axios
+          .get(
+            `http://localhost:5155/api/Child/EvaluteChildResult?childId=${childId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.token}`,
+              },
             }
-          }
-        });
-    } catch (err) {
-      console.log(err);
+          )
+          .then((response) => {
+            console.log(response);
+            if (response.data.statusCode === 200) {
+              console.log(response);
+              if (response.data.message === "Retreived Result succesfully") {
+                toast.success(response.data.data.finalResult);
+                setIsEvaluatedSuccessfully(true);
+                const childWithstrokeDasharray= response.data.data.childResultWithPercentagesDtos.map((child) => ({
+                  ...child,
+                  strokeDasharray: `${child.percentage.split('%')[0]}, 100`,
+                }))
+                setChildScores(
+                  childWithstrokeDasharray
+                );
+                setFinalResult(response.data.data.finalResult);
+                setShowPopup(true);
+                setEvaluateResponse(response.data.data);
+                console.log(
+                  response.data.data.finalResult,
+                  response.data.data.childResultWithPercentagesDtos
+                );
+
+                // navigate("/allchildren");
+              } else {
+                toast.error(response.data.message);
+              }
+            }
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      const childWithstrokeDasharray= childScores.map((child) => ({
+        ...child,
+        strokeDasharray: `${child.percentage.split('%')[0]}, 100`,
+      }))
+      var spicifyCircleColorForScores = childWithstrokeDasharray.map((child) => {
+        
+      })
+      setChildScores(childWithstrokeDasharray);
+      setShowPopup(true);
     }
   };
   return (
@@ -414,6 +616,31 @@ const AddPlayerForm = () => {
           theme="light"
           transition={Bounce}
         />
+        <Overlay show={showPopup}>
+          <PopupBox>
+            <h2 style={{ color: "green" }}>Popup Form</h2>
+              <Container>
+                {childScores.map((score, index) => (
+          
+                    <Svg viewBox="0 0 36 36">
+                      <Circle3
+                        strokeDasharray={score.strokeDasharray}
+                        d="M18 2.0845
+            a 15.9155 15.9155 0 0 1 0 31.831
+            a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                      <Text x="18" y="18">
+                        {score.percentage}%
+                      </Text>
+                    </Svg>
+
+                ))}
+                
+              </Container>
+
+            <CloseButton onClick={togglePopup}>Close</CloseButton>
+          </PopupBox>
+        </Overlay>
         <main class="flex-grow">
           <div className="flex flex-col min-h-screen bg-gray-100 font-sans">
             {/* Header and background same as before */}
@@ -777,7 +1004,6 @@ const AddPlayerForm = () => {
                             ) {
                               return (
                                 <>
-                               
                                   <div key={test.TestId} className="mb-4">
                                     {" "}
                                     <label className="block text-gray-700 mb-2">
@@ -797,19 +1023,22 @@ const AddPlayerForm = () => {
                                           ?.description
                                       }
                                     </p>
-                                    {(testRanges[test.TestId].gif!==undefined && testRanges[test.TestId].gif!==null)&&
-                                    <div className="flex items-center space-x-4">
-                                      <div className="w-1/2">
-                                        <img
-                                          src={testRanges[test.TestId].gif}
-                                          alt="Sit-Ups"
-                                          className="w-48 h-32 rounded-lg shadow"
-                                        />
-                                        <p className="text-sm text-gray-600 mt-2">
-                                          How to do the test correctly.
-                                        </p>
-                                      </div>
-                                    </div>}
+                                    {testRanges[test.TestId].gif !==
+                                      undefined &&
+                                      testRanges[test.TestId].gif !== null && (
+                                        <div className="flex items-center space-x-4">
+                                          <div className="w-1/2">
+                                            <img
+                                              src={testRanges[test.TestId].gif}
+                                              alt="Sit-Ups"
+                                              className="w-48 h-32 rounded-lg shadow"
+                                            />
+                                            <p className="text-sm text-gray-600 mt-2">
+                                              How to do the test correctly.
+                                            </p>
+                                          </div>
+                                        </div>
+                                      )}
                                     <input
                                       type="number"
                                       value={test.TestResult}
@@ -863,16 +1092,18 @@ const AddPlayerForm = () => {
                       Previous
                     </button>
                   )}
-                  <button
-                    onClick={handleNext}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-                  >
-                    {currentStep === steps.length - 2 &&
-                    currentTC === testsCategories.length - 1
-                      ? "Submit"
-                      : "Next"}
-                    <FaArrowRight className="inline ml-2" />
-                  </button>
+                  {currentStep === 5 ? null : (
+                    <button
+                      onClick={handleNext}
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                    >
+                      {currentStep === steps.length - 2 &&
+                      currentTC === testsCategories.length - 1
+                        ? "Submit"
+                        : "Next"}
+                      <FaArrowRight className="inline ml-2" />
+                    </button>
+                  )}
                 </div>
               </section>
             </main>
