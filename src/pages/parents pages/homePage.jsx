@@ -208,6 +208,8 @@ const AddPlayerForm = () => {
               name: test.name,
             })),
           }));
+          console.log(formData,tests);
+          
         }
       } catch (error) {
         console.error(error);

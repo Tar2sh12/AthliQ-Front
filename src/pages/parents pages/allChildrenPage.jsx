@@ -213,6 +213,7 @@ const PlayersList = () => {
             },
           })
           .then((response) => {
+            console.log(response.data.statusCode)
             if (response.data.statusCode === 200) {
               //console.log(response);
 
@@ -225,7 +226,10 @@ const PlayersList = () => {
               } else {
                 setTotalPages(Math.ceil(data.children.length / 6));
               }
-            } else {
+            } else if(response.data.statusCode==400) {
+              setPlayers([])
+              setTotalPages(1);
+              setCurrentPage(1)
               setError(response.data.message);
             }
           });
@@ -406,7 +410,7 @@ const PlayersList = () => {
               <div className="mt-6 flex justify-center gap-4">
                 <button
                   onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
+                  disabled={currentPage === 1|| totalPages===0}
                   className={`px-4 py-2 rounded-lg ${
                     currentPage === 1
                       ? "bg-gray-300 cursor-not-allowed"
