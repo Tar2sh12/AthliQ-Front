@@ -15,7 +15,6 @@ import OneLegStand from "../../assets/tests-gif/One-Leg-Stand.png";
 import StandingLongJumpTest from "../../assets/tests-gif/Standing-Long-Jump-Test.webp";
 import SitUpTest30seconds from "../../assets/tests-gif/Sit-up Test (30 seconds).jpg";
 import styled from "styled-components";
-import { small } from "framer-motion/client";
 
 
 const Overlay = styled.div`
@@ -37,7 +36,7 @@ const PopupBox = styled.div`
   padding: 30px;
   border-radius: 24px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-  width: 500px;
+  width: 1000px;
   text-align: center;
   opacity: 0;
   transform: scale(0.8);
@@ -54,7 +53,6 @@ const PopupBox = styled.div`
     }
   }
 `;
-
 
 const SubmitButton = styled.button`
   padding: 12px 24px;
@@ -92,7 +90,7 @@ const Svg = styled.svg`
 `;
 
 const Circle = styled.path`
-  stroke: #4cc790;
+
   fill: none;
   stroke-width: 2.8;
   stroke-linecap: round;
@@ -105,50 +103,10 @@ const Circle = styled.path`
   }
 `;
 
-const Circle2 = styled.path`
-  stroke: rgb(189, 199, 76);
-  fill: none;
-  stroke-width: 2.8;
-  stroke-linecap: round;
-  animation: progress 1s ease-out forwards;
-
-  @keyframes progress {
-    0% {
-      stroke-dasharray: 0 100;
-    }
-  }
-`;
-const Circle3 = styled.path`
-  stroke: rgb(199, 76, 76);
-  fill: none;
-  stroke-width: 2.8;
-  stroke-linecap: round;
-  animation: progress 1s ease-out forwards;
-
-  @keyframes progress {
-    0% {
-      stroke-dasharray: 0 100;
-    }
-  }
-`;
-
-const Circle4 = styled.path`
-  stroke: rgb(0, 188, 13);
-  fill: none;
-  stroke-width: 2.8;
-  stroke-linecap: round;
-  animation: progress 1s ease-out forwards;
-
-  @keyframes progress {
-    0% {
-      stroke-dasharray: 0 100;
-    }
-  }
-`;
 
 const Text = styled.text`
-  font-size: 6px;
-  fill: #4cc790;
+  font-size: 2px;
+  fill:rgb(41, 57, 50);
   font-weight: bold;
   text-anchor: middle;
   dominant-baseline: central;
@@ -165,17 +123,16 @@ const AddPlayerForm = () => {
   const [finalResult, setFinalResult] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [evaluateResponse, setEvaluateResponse] = useState(null);
-  const categorizedScores = {
-    largest:{num:undefined,Circle},
-    largeMid:{num:undefined,Circle2},
-    smallMid:{num:undefined,Circle3},
-    smallest:{num:undefined,Circle4}
 
-};
+  const [categorizedScores, setCategorizedScores] = useState( {
+    largest: { num: -Infinity },
+    largeMid: { num: -Infinity },
+    smallMid: { num: Infinity },
+    smallest: { num: Infinity },
+  });
   const togglePopup = () => {
     setShowPopup(!showPopup);
     console.log(childScores);
-    
   };
   const [formData, setFormData] = useState({
     Name: "",
@@ -333,22 +290,22 @@ const AddPlayerForm = () => {
           newErrors.FrontImage = "Front image is required";
         if (!formData.SideImage) newErrors.SideImage = "Back image is required";
         break;
-      case 4:
-        var counter = 0;
-        formData.tests.forEach((test, index) => {
-          if (!test.TestResult) {
-            CopyErrors[`test${index}`] = "Test result is required";
-            counter++;
-          }
-        });
-        if (counter % 2 === 0) {
-          errors.length = 0;
-          valid = true;
-        } else {
-          newErrors = CopyErrors;
-          valid = false;
-        }
-        break;
+      // case 4:
+      //   var counter = 0;
+      //   formData.tests.forEach((test, index) => {
+      //     if (!test.TestResult) {
+      //       CopyErrors[`test${index}`] = "Test result is required";
+      //       counter++;
+      //     }
+      //   });
+      //   if (counter % 2 === 0) {
+      //     errors.length = 0;
+      //     valid = true;
+      //   } else {
+      //     newErrors = CopyErrors;
+      //     valid = false;
+      //   }
+      //   break;
       default:
         break;
     }
@@ -563,13 +520,34 @@ const AddPlayerForm = () => {
               if (response.data.message === "Retreived Result succesfully") {
                 toast.success(response.data.data.finalResult);
                 setIsEvaluatedSuccessfully(true);
-                const childWithstrokeDasharray= response.data.data.childResultWithPercentagesDtos.map((child) => ({
-                  ...child,
-                  strokeDasharray: `${child.percentage.split('%')[0]}, 100`,
-                }))
-                setChildScores(
-                  childWithstrokeDasharray
-                );
+                const childWithstrokeDasharray =
+                  response.data.data.childResultWithPercentagesDtos.map(
+                    (child) => ({
+                      ...child,
+                      strokeDasharray: `${child.percentage.split("%")[0]}, 100`,
+                    })
+                  );
+                  let numbers = childWithstrokeDasharray.map(child => parseFloat(child.percentage.split("%")[0]));
+
+                  // Initialize variables for largest to smallest
+                  let largest = -Infinity, largeMid = -Infinity, smallMid = -Infinity, smallest = -Infinity;
+                
+                  for (let num of numbers) {
+                    if (num > largest) {
+                      [largest, largeMid, smallMid, smallest] = [num, largest, largeMid, smallMid];
+                    } else if (num > largeMid) {
+                      [largeMid, smallMid, smallest] = [num, largeMid, smallMid];
+                    } else if (num > smallMid) {
+                      [smallMid, smallest] = [num, smallMid];
+                    } else {
+                      smallest = num;
+                    }
+                  }
+                
+                  // Update state once
+                  setCategorizedScores({ largest: { num: largest }, largeMid: { num: largeMid }, smallMid: { num: smallMid }, smallest: { num: smallest } });
+                  console.log(categorizedScores);
+                setChildScores(childWithstrokeDasharray);
                 setFinalResult(response.data.data.finalResult);
                 setShowPopup(true);
                 setEvaluateResponse(response.data.data);
@@ -588,13 +566,31 @@ const AddPlayerForm = () => {
         console.log(err);
       }
     } else {
-      const childWithstrokeDasharray= childScores.map((child) => ({
+      const childWithstrokeDasharray = childScores.map((child) => ({
         ...child,
-        strokeDasharray: `${child.percentage.split('%')[0]}, 100`,
-      }))
-      var spicifyCircleColorForScores = childWithstrokeDasharray.map((child) => {
-        
-      })
+        strokeDasharray: `${child.percentage.split("%")[0]}, 100`,
+      }));
+      let numbers = childWithstrokeDasharray.map(child => parseFloat(child.percentage.split("%")[0]));
+
+      // Initialize variables for largest to smallest
+      let largest = -Infinity, largeMid = -Infinity, smallMid = -Infinity, smallest = -Infinity;
+    
+      for (let num of numbers) {
+        if (num > largest) {
+          [largest, largeMid, smallMid, smallest] = [num, largest, largeMid, smallMid];
+        } else if (num > largeMid) {
+          [largeMid, smallMid, smallest] = [num, largeMid, smallMid];
+        } else if (num > smallMid) {
+          [smallMid, smallest] = [num, smallMid];
+        } else {
+          smallest = num;
+        }
+      }
+    
+      // Update state once
+      setCategorizedScores({ largest: { num: largest }, largeMid: { num: largeMid }, smallMid: { num: smallMid }, smallest: { num: smallest } });
+      console.log(categorizedScores);
+      
       setChildScores(childWithstrokeDasharray);
       setShowPopup(true);
     }
@@ -617,30 +613,49 @@ const AddPlayerForm = () => {
           transition={Bounce}
         />
         <Overlay show={showPopup}>
-          <PopupBox>
-            <h2 style={{ color: "green" }}>Popup Form</h2>
-              <Container>
-                {childScores.map((score, index) => (
-          
-                    <Svg viewBox="0 0 36 36">
-                      <Circle3
-                        strokeDasharray={score.strokeDasharray}
-                        d="M18 2.0845
-            a 15.9155 15.9155 0 0 1 0 31.831
-            a 15.9155 15.9155 0 0 1 0 -31.831"
-                      />
-                      <Text x="18" y="18">
-                        {score.percentage}%
-                      </Text>
-                    </Svg>
+  <PopupBox>
+    <h2 style={{ color: "green" }}>Child Scores</h2>
+    <Container>
+      {childScores.map((score, index) => {
+        let percentage = parseFloat(score.percentage.split("%")[0]); 
 
-                ))}
-                
-              </Container>
+        let color = "black"; // Default color
+        if (percentage === categorizedScores.largest.num) {
+          color = "rgb(18, 226, 28)";
+        } else if (percentage === categorizedScores.largeMid.num) {
+          color = "rgb(126, 138, 215)";
+        } else if (percentage === categorizedScores.smallMid.num) {
+          color = "rgb(219, 238, 16)";
+        } else if (percentage === categorizedScores.smallest.num) {
+          color = "rgb(199, 76, 76)";
+        }
 
-            <CloseButton onClick={togglePopup}>Close</CloseButton>
-          </PopupBox>
-        </Overlay>
+        return (
+          <>
+          <Svg key={index} viewBox="0 0 36 36">
+            <Circle
+              stroke={color} 
+              strokeDasharray={score.strokeDasharray}
+              d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <Text x="18" y="18" fill={color}>
+              {score.category} {" "}{score.percentage}
+            </Text>
+          </Svg>
+          {/* <Text x="18" y="18" fill={color}>
+              {score.category}
+            </Text> */}
+            </>
+
+        );
+      })}
+    </Container>
+
+    <CloseButton onClick={togglePopup}>Close</CloseButton>
+  </PopupBox>
+</Overlay>
         <main class="flex-grow">
           <div className="flex flex-col min-h-screen bg-gray-100 font-sans">
             {/* Header and background same as before */}

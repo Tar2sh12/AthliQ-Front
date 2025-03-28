@@ -342,55 +342,7 @@ const PlayersList = () => {
 
   return (
     <>
-    <Button onClick={togglePopup}>Open Popup Form</Button>
-      <Overlay show={showPopup}>
-        <PopupBox>
-          <h2 style={{ color: "green" }}>Popup Form</h2>
-          <Form>
-          <Container>
-                        <Svg viewBox="0 0 36 36">
-                          <Circle3
-                            strokeDasharray="60, 100"
-                            d="M18 2.0845
-            a 15.9155 15.9155 0 0 1 0 31.831
-            a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <Text x="18" y="18">
-                            60%
-                          </Text>
-                        </Svg>
-                        <Svg viewBox="0 0 36 36">
-                          <Circle2
-                            strokeDasharray="75, 100"
-                            d="M18 2.0845
-            a 15.9155 15.9155 0 0 1 0 31.831
-            a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <Text x="18" y="18">
-                            75%
-                          </Text>
-                        </Svg>
-                        <Svg viewBox="0 0 36 36">
-                          <Circle
-                            strokeDasharray="90.9, 100"
-                            d="M18 2.0845
-            a 15.9155 15.9155 0 0 1 0 31.831
-            a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <Text x="18" y="18">
-                            90%
-                          </Text>
-                        </Svg>
-                      </Container>
-            <Label htmlFor="name">Username:</Label>
-            <Input type="text" placeholder="Enter Your Username" id="name" name="name" required />
-            <Label htmlFor="email">Email:</Label>
-            <Input type="email" placeholder="Enter Your Email" id="email" name="email" required />
-            <SubmitButton type="submit">Submit</SubmitButton>
-          </Form>
-          <CloseButton onClick={togglePopup}>Close</CloseButton>
-        </PopupBox>
-      </Overlay>
+    
       <div class="min-h-screen flex flex-col">
         <Header />
         <ToastContainer
