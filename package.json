@@ -1,53 +1,59 @@
 {
-  "name": "vax-front",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@apollo/client": "^3.12.2",
-    "@fortawesome/fontawesome-free": "^6.5.2",
-    "@microsoft/signalr": "^8.0.0",
-    "@tailwindcss/forms": "^0.5.10",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.8.1",
-    "bootstrap": "^5.3.3",
-    "framer-motion": "^12.5.0",
-    "graphql": "^16.9.0",
-    "jwt-decode": "^4.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^4.12.0",
-    "react-router-dom": "^6.23.0",
-    "react-scripts": "5.0.1",
-    "react-toastify": "^10.0.6",
-    "socket.io-client": "^4.8.1",
-    "styled-components": "^6.1.16",
-    "useparams": "^0.0.2",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+	"name": "athliq-front",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@apollo/client": "^3.12.2",
+		"@fortawesome/fontawesome-free": "^6.5.2",
+		"@microsoft/signalr": "^8.0.0",
+		"@tailwindcss/forms": "^0.5.10",
+		"@testing-library/jest-dom": "^5.17.0",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
+		"axios": "^1.8.1",
+		"bootstrap": "^5.3.3",
+		"dotenv": "^16.4.5",
+		"framer-motion": "^12.5.0",
+		"graphql": "^16.9.0",
+		"i18next": "^24.2.3",
+		"i18next-browser-languagedetector": "^8.0.4",
+		"jwt-decode": "^4.0.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-i18next": "^15.4.1",
+		"react-icons": "^4.12.0",
+		"react-intersection-observer": "^9.16.0",
+		"react-router-dom": "^6.23.0",
+		"react-scripts": "5.0.1",
+		"react-slick": "^0.30.3",
+		"react-toastify": "^10.0.6",
+		"socket.io-client": "^4.8.1",
+		"styled-components": "^6.1.16",
+		"useparams": "^0.0.2",
+		"web-vitals": "^2.1.4"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
 }

@@ -1,0 +1,71 @@
+{
+
+      "title": "Add New Player",
+      "steps": {
+        "personalInfo": "Personal Info",
+        "medicalAgreement": "Medical & Agreement",
+        "sportHistory": "Sport History",
+        "physicalMeasurements": "Physical Measurements",
+        "physicalTests": "Physical Tests",
+        "evaluate": "Evaluate"
+      },
+      "form": {
+        "fullName": "Full Name *",
+        "gender": "Gender *",
+        "selectGender": "Select Gender",
+        "male": "Male",
+        "female": "Female",
+        "dob": "Date of Birth *",
+        "schoolName": "School Name *",
+        "clubName": "Club Name",
+        "doctorApproval": "I agree to provide doctor's approval *",
+        "bloodTest": "Normal blood test results *",
+        "sportPreference": "Sport Preference *",
+        "selectSportPreference": "Select Sport Preference",
+        "parentSportHistory": "Parent Sport History *",
+        "selectParentHistory": "Select Parent Sport History",
+        "sportHistory": "Sport History (optional)",
+        "selectSportHistory": "Select Sport History (Optional)",
+        "height": "Height (cm) *",
+        "weight": "Weight (kg) *",
+        "frontImage": "Front Image *",
+        "sideImage": "Side Image *",
+        "howToTest": "How to do the test correctly.",
+        "evaluateButton": "Evaluate"
+      },
+      "testCategories": {
+        "muscularStrength": "Muscular Strength Tests",
+        "muscularEndurance": "Muscular Endurance Tests",
+        "balance": "Balance Tests",
+        "speedAgility": "Speed and Agility Tests"
+      },
+      "buttons": {
+        "previous": "Previous",
+        "next": "Next",
+        "submit": "Submit",
+        "close": "Close"
+      },
+      "results": {
+        "title": "Child Scores",
+        "success": "Player added successfully",
+        "failed": "Failed to add player"
+      },
+      "errors": {
+        "required": "is required",
+        "name": "Name is required",
+        "gender": "Gender is required",
+        "dob": "Date of Birth is required",
+        "school": "School Name is required",
+        "doctorApproval": "Doctor approval is required",
+        "bloodTest": "Blood test confirmation is required",
+        "sportPreference": "Sport preference is required",
+        "parentHistory": "Parent sport history is required",
+        "height": "Height is required",
+        "weight": "Weight is required",
+        "frontImage": "Front image is required",
+        "sideImage": "Back image is required",
+        "ageRange": "Age must be between 6 and 9 years",
+        "testRange": "Value must be between {{min}} and {{max}}"
+      }
+
+  }

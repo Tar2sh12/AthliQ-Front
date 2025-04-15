@@ -1,0 +1,14 @@
+{
+  "title": "Child Management",
+  "subtitle": "Manage all children's records efficiently",
+  "addNewChild": {
+    "title": "Add New Child",
+    "description": "Register a new child to the system",
+    "button": "Add Now"
+  },
+  "viewAllChildren": {
+    "title": "View All Children",
+    "description": "Browse and manage all registered children",
+    "button": "View List"
+  }
+}

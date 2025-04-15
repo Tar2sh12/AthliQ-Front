@@ -22,11 +22,11 @@ function Footer() {
 				<FooterGrid justify="space-between">
 					<FooterColumn id="footerLogo">
 						<FooterLogo to="/">
-							<SocialIcon src="./assets/logo.png" />
-							Delta
+							<SocialIcon src="./assets/logo-Ph2.png" />
+							
 						</FooterLogo>
 						<FooterAddress>
-							69 Street, Delta Building, US Road, Los Angeles 123
+							Software Engineer Department , Faculty of Computer Science, Helwan University 
 						</FooterAddress>
 
 						<Row align="center" margin="auto  0 0 0" gap="1rem">
@@ -53,7 +53,7 @@ function Footer() {
 						</FooterLinkItems>
 					))}
 				</FooterGrid>
-				<FooterRights>Delta © 2021</FooterRights>
+				<FooterRights>AthliQ © 2024</FooterRights>
 			</FooterWrapper>
 		</Section>
 	);

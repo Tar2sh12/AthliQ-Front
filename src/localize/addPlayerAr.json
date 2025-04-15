@@ -1,0 +1,70 @@
+{
+
+      "title": "إضافة لاعب جديد",
+      "steps": {
+        "personalInfo": "المعلومات الشخصية",
+        "medicalAgreement": "الموافقة الطبية",
+        "sportHistory": "تاريخ الرياضة",
+        "physicalMeasurements": "القياسات البدنية",
+        "physicalTests": "الاختبارات البدنية",
+        "evaluate": "تقييم"
+      },
+      "form": {
+        "fullName": "الاسم الكامل *",
+        "gender": "الجنس *",
+        "selectGender": "اختر الجنس",
+        "male": "ذكر",
+        "female": "أنثى",
+        "dob": "تاريخ الميلاد *",
+        "schoolName": "اسم المدرسة *",
+        "clubName": "اسم النادي",
+        "doctorApproval": "أوافق على تقديم موافقة الطبيب *",
+        "bloodTest": "نتائج فحص الدم طبيعية *",
+        "sportPreference": "الرياضة المفضلة *",
+        "selectSportPreference": "اختر الرياضة المفضلة",
+        "parentSportHistory": "تاريخ رياضة الوالدين *",
+        "selectParentHistory": "اختر تاريخ رياضة الوالدين",
+        "sportHistory": "تاريخ الرياضة (اختياري)",
+        "selectSportHistory": "اختر تاريخ الرياضة (اختياري)",
+        "height": "الطول (سم) *",
+        "weight": "الوزن (كجم) *",
+        "frontImage": "صورة أمامية *",
+        "sideImage": "صورة جانبية *",
+        "howToTest": "كيفية أداء الاختبار بشكل صحيح.",
+        "evaluateButton": "تقييم"
+      },
+      "testCategories": {
+        "muscularStrength": "اختبارات القوة العضلية",
+        "muscularEndurance": "اختبارات التحمل العضلي",
+        "balance": "اختبارات التوازن",
+        "speedAgility": "اختبارات السرعة والرشاقة"
+      },
+      "buttons": {
+        "previous": "السابق",
+        "next": "التالي",
+        "submit": "إرسال",
+        "close": "إغلاق"
+      },
+      "results": {
+        "title": "نتائج الطفل",
+        "success": "تم إضافة اللاعب بنجاح",
+        "failed": "فشل إضافة اللاعب"
+      },
+      "errors": {
+        "required": "مطلوب",
+        "name": "الاسم مطلوب",
+        "gender": "الجنس مطلوب",
+        "dob": "تاريخ الميلاد مطلوب",
+        "school": "اسم المدرسة مطلوب",
+        "doctorApproval": "موافقة الطبيب مطلوبة",
+        "bloodTest": "تأكيد فحص الدم مطلوب",
+        "sportPreference": "الرياضة المفضلة مطلوبة",
+        "parentHistory": "تاريخ رياضة الوالدين مطلوب",
+        "height": "الطول مطلوب",
+        "weight": "الوزن مطلوب",
+        "frontImage": "الصورة الأمامية مطلوبة",
+        "sideImage": "الصورة الجانبية مطلوبة",
+        "ageRange": "يجب أن يكون العمر بين 6 و 9 سنوات",
+        "testRange": "يجب أن تكون القيمة بين {{min}} و {{max}}"
+      }
+  }

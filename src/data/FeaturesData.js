@@ -1,48 +1,48 @@
+// FeaturesData.js
 import React from 'react';
-
-import { BsFillShieldLockFill } from 'react-icons/bs';
+import { FaMedkit } from 'react-icons/fa';
 import { IoIosOptions } from 'react-icons/io';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { BiSupport, BiDollar } from 'react-icons/bi';
-import { GrHostMaintenance } from 'react-icons/gr';
+import { FaBolt } from 'react-icons/fa';
+import { GiBiceps } from 'react-icons/gi';
+
 const iconStyle = (Icon) => <Icon size="3rem" color="#0f0f0f" />;
 
-export const featuresData = [
-	{
-		name: 'Best Security',
-		description: 'We offer the best data security to our clients, which makes us stand out',
-		icon: iconStyle(BsFillShieldLockFill),
-		imgClass: 'one',
-	},
-	{
-		name: 'Ease of Use',
-		description: 'Our system is easy to use and integrate',
-		icon: iconStyle(IoIosOptions),
-		imgClass: 'two',
-	},
-	{
-		name: 'Maintenance',
-		description: 'Our code is written in highest standards, which makes it highly sustainable',
-		icon: iconStyle(GrHostMaintenance),
-		imgClass: 'three',
-	},
-	{
-		name: '24/7 Support',
-		description: 'Our team is available at all times in case you need us',
-		icon: iconStyle(BiSupport),
-		imgClass: 'four',
-	},
-	{
-		name: 'Price',
-		description: 'We offer the highest value/cost ratio',
-		icon: iconStyle(BiDollar),
-		imgClass: 'five',
-	},
-	{
-		name: 'Scalable',
-		description:
-			'Our servers are located all over the world, therefore improving scalability and speed ',
-		icon: iconStyle(AiOutlineCloudUpload),
-		imgClass: 'six',
-	},
+export const getFeaturesData = (t) => [
+  {
+    name: t("Injury Prevention"),
+    description: t("Injury Prevention Description"),
+    icon: iconStyle(FaMedkit),
+    imgClass: 'one',
+  },
+  {
+    name: t("Time and Money Savings"),
+    description: t("Time and Money Savings Description"),
+    icon: iconStyle(BiDollar),
+    imgClass: 'five',
+  },
+  {
+    name: t("Performance Boost"),
+    description: t("Performance Boost Description"),
+    icon: iconStyle(FaBolt),
+    imgClass: 'three',
+  },
+  {
+    name: t("24/7 Support"),
+    description: t("24/7 Support Description"),
+    icon: iconStyle(BiSupport),
+    imgClass: 'four',
+  },
+  {
+    name: t("Ease of Use"),
+    description: t("Ease of Use Description"),
+    icon: iconStyle(IoIosOptions),
+    imgClass: 'two',
+  },
+  {
+    name: t("Physical Assessment"),
+    description: t("Physical Assessment Description"),
+    icon: iconStyle(GiBiceps),
+    imgClass: 'six',
+  },
 ];
