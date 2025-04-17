@@ -16,7 +16,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { data } from "../../data/NavbarData";
 import { getAuthToken, removeAuthToken } from "../../services/auth.jsx";
-import { useTranslation } from 'react-i18next'; // Add this import
+import { useTranslation } from "react-i18next"; // Add this import
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
@@ -53,7 +53,7 @@ const Navbar = () => {
       scrollTo(id);
     }
 
-    if(text === "Log Out"){
+    if (text === "Log Out") {
       removeAuthToken();
     }
     navigate(to);
@@ -61,10 +61,10 @@ const Navbar = () => {
   };
 
   const toggleLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+    const newLanguage = currentLanguage === "en" ? "ar" : "en";
     i18n.changeLanguage(newLanguage);
     setCurrentLanguage(newLanguage);
-    document.documentElement.dir = newLanguage === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = newLanguage === "ar" ? "rtl" : "ltr";
   };
 
   return (
@@ -72,31 +72,41 @@ const Navbar = () => {
       <Nav>
         <NavbarContainer>
           <NavLogo to="/">
-            <NavIcon src="./assets/logo-Ph2.png" alt="logo" />
+            <NavIcon
+              src={
+                i18n.language == "en"
+                  ? "./assets/logo-ph2.png"
+                  : "./assets/arabicLogo.png"
+              }
+              style={{ width: "190px" }}
+              alt="logo"
+            />
           </NavLogo>
-          
+
           {/* Language Toggle Button */}
           {/* <LanguageButton onClick={toggleLanguage}>
             {currentLanguage === 'en' ? 'English':'العربية' }
           </LanguageButton>
            */}
-           <LanguageButton onClick={toggleLanguage}>
-            {currentLanguage === 'en' ? 'English':'العربية' }
+          <LanguageButton onClick={toggleLanguage}>
+            {currentLanguage === "en" ? "English" : "العربية"}
           </LanguageButton>
 
-          <MobileIcon onClick={handleClick}>
+          <MobileIcon onClick={handleClick} lang={currentLanguage}>
             {show ? <FaTimes /> : <CgMenuRight />}
           </MobileIcon>
+
           <NavMenu show={show}>
-          <>
-          
-            {filteredNavItems.map((el, index) => (
-              <NavItem key={index}>
-                <NavLinks onClick={() => closeMobileMenu(el.to, el.id, el.text)}>
-                  {t(el.text)} {/* Wrap text with translation */}
-                </NavLinks>
-              </NavItem>
-            ))}
+            <>
+              {filteredNavItems.map((el, index) => (
+                <NavItem key={index}>
+                  <NavLinks
+                    onClick={() => closeMobileMenu(el.to, el.id, el.text)}
+                  >
+                    {t(el.text)} {/* Wrap text with translation */}
+                  </NavLinks>
+                </NavItem>
+              ))}
             </>
           </NavMenu>
         </NavbarContainer>

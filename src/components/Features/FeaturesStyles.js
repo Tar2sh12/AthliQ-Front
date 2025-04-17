@@ -68,7 +68,7 @@ export const FeatureText = styled.p`
 	letter-spacing: 0.5px;
 	color: #626881;
 
-	@media screen and (max-width: 768px) {
+	/* @media screen and (max-width: 768px) {
 		display: none;
-	}
+	} */
 `;

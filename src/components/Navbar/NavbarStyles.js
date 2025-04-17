@@ -50,13 +50,12 @@ export const MobileIcon = styled.div`
 		display: block;
 		position: absolute;
 		top: 0;
-		right: 0;
-		transform: translate(-100%, 60%);
+		${props => props.lang === 'ar' ? 'left: 0;' : 'right: 0;'}
+		transform: ${props => props.lang === 'ar' ? 'translate(100%, 60%)' : 'translate(-100%, 60%)'};
 		font-size: 1.8rem;
 		cursor: pointer;
 	}
 `;
-
 export const NavMenu = styled.ul`
 	display: flex;
 	align-items: center;
