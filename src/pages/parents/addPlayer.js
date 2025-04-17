@@ -622,6 +622,8 @@ const AddPlayerForm = () => {
         );
         if (res.data.statusCode === 200) {
           setTests(res.data.data);
+          console.log(tests);
+          
           setFormData((prev) => ({
             ...prev,
             tests: res.data.data.map((test) => ({
@@ -645,7 +647,6 @@ const AddPlayerForm = () => {
         .then((res) => {
           if (res.data.statusCode === 200) {
             setSports(res.data.data);
-            console.log(res.data.data);
           } else if (res.data.statusCode === 400) {
             toast.error(res.data.message);
           }
@@ -1320,12 +1321,19 @@ const AddPlayerForm = () => {
                         <FormGroup key={test.TestId}>
                           <FormLabel>
                             {tests.find((t) => t.id === test.TestId)?.id}{" "}
-                            {tests.find((t) => t.id === test.TestId)?.name} *
+                            {i18n.language == "en" && tests.find((t) => t.id === test.TestId)?.name} *
+                            {i18n.language == "ar" && tests.find((t) => t.id === test.TestId)?.arabicName} *
                           </FormLabel>
                           <TestDescription $isRTL={isRTL}>
                             {
+                              i18n.language == "en"&&
                               tests.find((t) => t.id === test.TestId)
                                 ?.description
+                            }
+                            {
+                              i18n.language == "ar"&&
+                              tests.find((t) => t.id === test.TestId)
+                                ?.descriptionAr
                             }
                           </TestDescription>
                           {testRanges[test.TestId]?.gif && (
