@@ -362,12 +362,9 @@ const ChildTestResultsPage = () => {
             </TestCard>
           ))}
         </TestCardsContainer>
-        <SummarySection>
-        <SummaryHeading>Continue to evaluate your child</SummaryHeading>
-        <BackButton to={`/addplayer/evaluatedTests/evaluatedCategories/${id}`}>
+       <BackButton to={`/addplayer/evaluatedTests/evaluatedCategories/${id}`}>
           Evaluate Child
         </BackButton>
-        </SummarySection>
       </ResultsContainer>
     );
   };
