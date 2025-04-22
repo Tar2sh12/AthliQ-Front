@@ -65,17 +65,7 @@ const Form = () => {
     } catch (error) {
       console.log(error);
     }
-    //const resultError = validateForm({ name, email, password, confirmPass });
-
-    // if (resultError !== null) {
-    // 	setError(resultError);
-    // 	return;
-    // }
-    // setName('');
-    // setEmail('');
-    // setPassword('');
-    // setConfirmPass('');
-    // setError(null);
+   
     setSuccess('Application was submitted!');
     navigate('/login');
   };

@@ -5,7 +5,8 @@ import childManagementEn from "./localize/childManagementEn.json";
 import childManagementAr from "./localize/childManagementAr.json";
 import addPlayerFormEn from "./localize/addPlayerEn.json";
 import addPlayerFormAr from "./localize/addPlayerAr.json";
-
+import signInFormEn from "./localize/loginEn.json";
+import signInFormAr from "./localize/loginAr.json";
 const resources = {
   en: {
     translation: {
@@ -167,6 +168,7 @@ const resources = {
       "Search players...": "Search players...",
       childManagement: childManagementEn,
       addPlayer: addPlayerFormEn,
+      auth: signInFormEn.auth,
     },
   },
   ar: {
@@ -327,7 +329,8 @@ const resources = {
       "Loading...": "جاري التحميل...",
       "Search players...": "ابحث عن لاعبين...",
       childManagement: childManagementAr,
-      addPlayer: addPlayerFormAr
+      addPlayer: addPlayerFormAr,
+      auth: signInFormAr.auth,
     },
   },
 };

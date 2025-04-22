@@ -1,0 +1,18 @@
+{
+    "auth": {
+      "signIn": {
+        "title": "Sign in",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Sign In",
+        "placeholders": {
+          "email": "Enter your email",
+          "password": "Enter your password"
+        },
+        "errors": {
+          "required": "This field is required",
+          "invalidEmail": "Please enter a valid email"
+        }
+      }
+    }
+  }
