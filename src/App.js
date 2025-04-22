@@ -13,6 +13,8 @@ import Footer from './components/Footer/Footer';
 import AddPlayerForm from './pages/parents/addPlayer';
 import InstructionsPage from './pages/parents/InstructionsPage';
 import ChildrenPage from './pages/parents/ChildrenPage';
+import ChildTestResultsPage from './pages/parents/testsGrades.parent';
+import ChildCategoriesResultsPage from './pages/parents/EvaluateChild';
 const ProtectedRoute = ({ children }) => {
   const token = getAuthToken();
   if (!token.token) {
@@ -66,7 +68,9 @@ function App() {
         />
         
         {/* Redirect invalid paths to login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+        <Route path="/addplayer/evaluatedTests/:id" element={<ChildTestResultsPage/>} />
+        <Route path="/addplayer/evaluatedTests/evaluatedCategories/:id" element={<ChildCategoriesResultsPage/>} />
       </Routes>
       <Footer />
     </Router>

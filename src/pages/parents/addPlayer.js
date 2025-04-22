@@ -802,6 +802,7 @@ const AddPlayerForm = () => {
           setChildId(res.data.data.childId);
           setCurrentStep((prev) => prev + 1);
           toast.success(t("addPlayer.results.success"));
+          navigate(`evaluatedTests/${res.data.data.childId}`);
         } else {
           toast.error(res.data.message);
           resetForm();

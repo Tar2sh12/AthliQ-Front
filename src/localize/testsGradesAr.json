@@ -1,0 +1,23 @@
+{
+    "test_results": {
+      "title": "نتائج اختبارات {{name}}",
+      "subtitle": "تقرير مفصل لنتائج الاختبارات البدنية وكيفية تحسينها",
+      "how_to_enhance": "كيفية التحسين",
+      "hide_enhancement": "إخفاء نصائح التحسين"
+    },
+    "evaluation": {
+      "weak": "ضعيف",
+      "moderate": "متوسط",
+      "good": "جيد",
+      "very_good": "جيد جداً"
+    },
+    "common": {
+      "error": "خطأ"
+    },
+    "navigation": {
+      "back_home": "العودة للصفحة الرئيسية"
+    },
+    "error": {
+      "fetching_data": "خطأ في جلب البيانات"
+    }
+  }

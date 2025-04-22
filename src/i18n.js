@@ -7,6 +7,8 @@ import addPlayerFormEn from "./localize/addPlayerEn.json";
 import addPlayerFormAr from "./localize/addPlayerAr.json";
 import signInFormEn from "./localize/loginEn.json";
 import signInFormAr from "./localize/loginAr.json";
+import testsGradesEn from "./localize/testsGradesEn.json";
+import testsGradesAr from "./localize/testsGradesAr.json";
 const resources = {
   en: {
     translation: {
@@ -169,6 +171,7 @@ const resources = {
       childManagement: childManagementEn,
       addPlayer: addPlayerFormEn,
       auth: signInFormEn.auth,
+      testsGrades: testsGradesEn
     },
   },
   ar: {
@@ -331,6 +334,7 @@ const resources = {
       childManagement: childManagementAr,
       addPlayer: addPlayerFormAr,
       auth: signInFormAr.auth,
+      testsGrades: testsGradesAr
     },
   },
 };
