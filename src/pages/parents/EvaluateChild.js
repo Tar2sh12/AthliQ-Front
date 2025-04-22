@@ -449,9 +449,11 @@ const ChildCategoriesResultsPage = () => {
           setShowPopup(true);
         } else {
           toast.error(response.data.message);
+          setEvaluateResponse(null);
         }
       } catch (err) {
         console.error(err);
+        setEvaluateResponse(null);
         toast.error(t("addPlayer.results.failed"));
         setError(t("addPlayer.results.failed"));
       } finally {
@@ -470,7 +472,7 @@ const ChildCategoriesResultsPage = () => {
     );
   }
 
-  if (error || !evaluateResponse) {
+  if ( !evaluateResponse) {
     return (
       <ResultsContainer>
         <ErrorMessage>
