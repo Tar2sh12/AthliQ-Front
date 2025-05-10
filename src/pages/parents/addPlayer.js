@@ -622,8 +622,7 @@ const AddPlayerForm = () => {
         );
         if (res.data.statusCode === 200) {
           setTests(res.data.data);
-          console.log(tests);
-          
+
           setFormData((prev) => ({
             ...prev,
             tests: res.data.data.map((test) => ({
@@ -752,8 +751,93 @@ const AddPlayerForm = () => {
       }));
     }
   };
+  const validateBMIInputs = (height, weight) => {
+    const errors = {};
 
+    if (!height) {
+      errors.height = "Height is required";
+    } else if (isNaN(height) || height <= 0) {
+      errors.height = "Height must be a positive number";
+    }
+
+    if (!weight) {
+      errors.weight = "Weight is required";
+    } else if (isNaN(weight) || weight <= 0) {
+      errors.weight = "Weight must be a positive number";
+    }
+
+    // If valid, calculate BMI and check health risk
+    if (Object.keys(errors).length === 0) {
+      const bmi = weight / Math.pow(height / 100, 2); // height in cm -> meters
+
+      if (bmi < 15 || bmi > 30) {
+        errors.bmi = `BMI (${bmi.toFixed(
+          2
+        )}) indicates potential health issues.`;
+      }
+    }
+
+    return errors;
+  };
   const handleNext = async () => {
+    if (currentStep === 4 && currentTC < testsCategories.length - 1) {
+
+      const testsToBeEntered = tests.filter(
+        (test) => test.categoryId === testsCategories[currentTC].id
+      );
+      const enteredData = formData.tests.filter((test) =>
+        testsToBeEntered.some((t) => t.id === test.TestId)
+      );
+
+      var err = {};
+      enteredData.forEach((test) => {
+        if (test.TestResult.length === 0) {
+          setErrors((prev) => ({
+            ...prev,
+            [`test${test.TestId - 1}`]: t("addPlayer.errors.required"),
+          }));
+          err[`test${test.TestId}`] = t("addPlayer.errors.required");
+        } else if (
+          +test.TestResult < testRanges[test.TestId]?.min ||
+          +test.TestResult > testRanges[test.TestId]?.max
+        ) {
+          const min = testRanges[test.TestId]?.min;
+          const max = testRanges[test.TestId]?.max;
+          console.log(min, max, +test.TestResult);
+
+          setErrors((prev) => ({
+            ...prev,
+            [`test${test.TestId - 1}`]: t("addPlayer.errors.testRange", {
+              min,
+              max,
+            }),
+          }));
+          err[`test${test.TestId - 1}`] = t("addPlayer.errors.testRange", {
+            min,
+            max,
+          });
+        } else {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[`test${test.TestId - 1}`];
+            return newErrors;
+          });
+        }
+      });
+      if (Object.keys(err).length > 0) {
+        console.log(err);
+
+        return;
+      }
+    }
+    if (currentStep === 3) {
+      const errors = validateBMIInputs(formData.Height, formData.Weight);
+      if (Object.keys(errors).length > 0) {
+        toast.error(errors.height || errors.weight || errors.bmi);
+        return;
+      }
+    }
+
     if (
       currentStep === steps.length - 2 &&
       currentTC === testsCategories.length - 1
@@ -868,25 +952,29 @@ const AddPlayerForm = () => {
 
   const handleTestChange = (index, value, min, max) => {
     const numValue = value === "" ? "" : Number(value);
+    setFormData((prev) => {
+      const newTests = [...prev.tests];
+      newTests[index] = { ...newTests[index], TestResult: value };
+      return { ...prev, tests: newTests };
+    });
+    // if (value !== "" && (numValue < min || numValue > max)) {
+    //   setErrors((prev) => ({
+    //     ...prev,
+    //     [`test${index}`]: t("addPlayer.errors.testRange", { min, max }),
+    //   }));
+    // } else {
+    //   setErrors((prev) => {
+    //     const newErrors = { ...prev };
+    //     delete newErrors[`test${index}`];
+    //     return newErrors;
+    //   });
 
-    if (value !== "" && (numValue < min || numValue > max)) {
-      setErrors((prev) => ({
-        ...prev,
-        [`test${index}`]: t("addPlayer.errors.testRange", { min, max }),
-      }));
-    } else {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[`test${index}`];
-        return newErrors;
-      });
-
-      setFormData((prev) => {
-        const newTests = [...prev.tests];
-        newTests[index] = { ...newTests[index], TestResult: value };
-        return { ...prev, tests: newTests };
-      });
-    }
+    //   setFormData((prev) => {
+    //     const newTests = [...prev.tests];
+    //     newTests[index] = { ...newTests[index], TestResult: value };
+    //     return { ...prev, tests: newTests };
+    //   });
+    // }
   };
 
   const handleEvaluateButton = async () => {
@@ -1248,6 +1336,7 @@ const AddPlayerForm = () => {
                       name="Height"
                       value={formData.Height}
                       onChange={handleInputChange}
+                      onWheel={(e) => e.target.blur()}
                       $isRTL={isRTL}
                     />
                     {errors.Height && <ErrorText>{errors.Height}</ErrorText>}
@@ -1260,6 +1349,7 @@ const AddPlayerForm = () => {
                       name="Weight"
                       value={formData.Weight}
                       onChange={handleInputChange}
+                      onWheel={(e) => e.target.blur()}
                       $isRTL={isRTL}
                     />
                     {errors.Weight && <ErrorText>{errors.Weight}</ErrorText>}
@@ -1322,20 +1412,22 @@ const AddPlayerForm = () => {
                         <FormGroup key={test.TestId}>
                           <FormLabel>
                             {tests.find((t) => t.id === test.TestId)?.id}{" "}
-                            {i18n.language == "en" && tests.find((t) => t.id === test.TestId)?.name} *
-                            {i18n.language == "ar" && tests.find((t) => t.id === test.TestId)?.arabicName} *
+                            {i18n.language == "en" &&
+                              tests.find((t) => t.id === test.TestId)
+                                ?.name}{" "}
+                            *
+                            {i18n.language == "ar" &&
+                              tests.find((t) => t.id === test.TestId)
+                                ?.arabicName}{" "}
+                            *
                           </FormLabel>
                           <TestDescription $isRTL={isRTL}>
-                            {
-                              i18n.language == "en"&&
+                            {i18n.language == "en" &&
                               tests.find((t) => t.id === test.TestId)
-                                ?.description
-                            }
-                            {
-                              i18n.language == "ar"&&
+                                ?.description}
+                            {i18n.language == "ar" &&
                               tests.find((t) => t.id === test.TestId)
-                                ?.descriptionAr
-                            }
+                                ?.descriptionAr}
                           </TestDescription>
                           {testRanges[test.TestId]?.gif && (
                             <div>
@@ -1359,9 +1451,7 @@ const AddPlayerForm = () => {
                                 testRanges[test.TestId]?.max
                               )
                             }
-                            min={testRanges[test.TestId]?.min}
-                            max={testRanges[test.TestId]?.max}
-                            step="any"
+                            onWheel={(e) => e.target.blur()}
                             $isRTL={isRTL}
                           />
                           {errors[`test${index}`] && (
@@ -1382,7 +1472,7 @@ const AddPlayerForm = () => {
               </EvaluateButton>
             )}
 
-            {i18n.language === "en" &&
+            {i18n.language === "en" && (
               <>
                 <NavigationButtons $isRTL={isRTL}>
                   {currentStep > 0 && currentStep !== 5 && (
@@ -1406,11 +1496,10 @@ const AddPlayerForm = () => {
                   )}
                 </NavigationButtons>
               </>
-            }
-            {i18n.language === "ar" &&
+            )}
+            {i18n.language === "ar" && (
               <>
                 <NavigationButtons $isRTL={isRTL}>
-                  
                   {currentStep !== 5 && (
                     <>
                       <Button onClick={handleNext} $isRTL={isRTL}>
@@ -1432,7 +1521,7 @@ const AddPlayerForm = () => {
                   )}
                 </NavigationButtons>
               </>
-            }
+            )}
           </FormSection>
         </Container>
       </MainContent>
