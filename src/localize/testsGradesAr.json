@@ -3,19 +3,23 @@
       "title": "نتائج اختبارات {{name}}",
       "subtitle": "تقرير مفصل لنتائج الاختبارات البدنية وكيفية تحسينها",
       "how_to_enhance": "كيفية التحسين",
-      "hide_enhancement": "إخفاء نصائح التحسين"
+      "hide_enhancement": "إخفاء نصائح التحسين",
+      "overall_evaluation": "تقييم عام"
     },
     "evaluation": {
       "weak": "ضعيف",
       "moderate": "متوسط",
       "good": "جيد",
-      "very_good": "جيد جداً"
+      "very_good": "جيد جداً",
+      "Average": "متوسط",
+      "Excellent": "ممتاز"
     },
     "common": {
       "error": "خطأ"
     },
     "navigation": {
-      "back_home": "العودة للصفحة الرئيسية"
+      "back_home": "العودة للصفحة الرئيسية",
+      "evaluate_child": "تقييم الطفل"
     },
     "error": {
       "fetching_data": "خطأ في جلب البيانات"

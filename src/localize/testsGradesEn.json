@@ -3,19 +3,23 @@
       "title": "Test Results for {{name}}",
       "subtitle": "Detailed report of physical test results and how to improve them",
       "how_to_enhance": "How to improve",
-      "hide_enhancement": "Hide improvement tips"
+      "hide_enhancement": "Hide improvement tips",
+      "overall_evaluation": "Overall Evaluation"
     },
     "evaluation": {
       "weak": "Weak",
       "moderate": "Moderate",
       "good": "Good",
-      "very_good": "Very Good"
+      "very_good": "Very Good",
+      "Average": "Average",
+      "Excellent": "Excellent"
     },
     "common": {
       "error": "ERROR"
     },
     "navigation": {
-      "back_home": "Back to Home page"
+      "back_home": "Back to Home page",
+      "evaluate_child": "Evaluate Child"
     },
     "error": {
       "fetching_data": "Error in fetching data"

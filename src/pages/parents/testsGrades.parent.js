@@ -75,10 +75,9 @@ const GradeCircle = styled.div`
   justify-content: center;
   font-size: 2rem;
   font-weight: 700;
-  background: ${({ grade }) => {
-    if (grade < 30) return 'linear-gradient(135deg, #ff416c, #ff4b2b)';
-    if (grade < 60) return 'linear-gradient(135deg, #f7b733, #fc4a1a)';
-    if (grade < 80) return 'linear-gradient(135deg, #56ab2f, #a8e063)';
+  background: ${({ gradeLevel }) => {
+    if (gradeLevel === 'Weak') return 'linear-gradient(135deg, #ff416c, #ff4b2b)';
+    if (gradeLevel === 'Average') return 'linear-gradient(135deg, #f7b733, #fc4a1a)';
     return 'linear-gradient(135deg, #00b09b, #96c93d)';
   }};
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
@@ -93,9 +92,8 @@ const EvaluationBadge = styled.div`
   background: ${({ evaluation }) => {
     switch (evaluation) {
       case 'Weak': return 'linear-gradient(135deg, #ff416c, #ff4b2b)';
-      case 'Moderate': return 'linear-gradient(135deg, #f7b733, #fc4a1a)';
-      case 'Good': return 'linear-gradient(135deg, #56ab2f, #a8e063)';
-      case 'Very Good': return 'linear-gradient(135deg, #00b09b, #96c93d)';
+      case 'Average': return 'linear-gradient(135deg, #f7b733, #fc4a1a)';
+      case 'Excellent': return 'linear-gradient(135deg, #00b09b, #96c93d)';
       default: return 'linear-gradient(135deg, #00b09b, #96c93d)';
     }
   }};
@@ -145,8 +143,6 @@ const EnhanceContent = styled.div`
     to { opacity: 1; transform: translateY(0); }
   }
 `;
-
-
 
 const BackButton = styled(Link)`
   background: linear-gradient(to right, #4b6cb7, #182848);
@@ -203,7 +199,6 @@ const ErrorMessage = styled.div`
   border: 1px solid rgba(255, 65, 108, 0.5);
 `;
 
-
 const SummarySection = styled.div`
   margin-top: 4rem;
   text-align: center;
@@ -228,6 +223,7 @@ const SummaryHeading = styled.h2`
   color: #fff;
   font-weight: 700;
 `;
+
 const ChildTestResultsPage = () => {
     const {id} = useParams();
     const navigate = useNavigate();
@@ -253,7 +249,6 @@ const ChildTestResultsPage = () => {
             .then((response) => {
               if (response.data.statusCode === 200) {
                 console.log(response);  
-                
                 setChildData(response.data.data);
               }
             });
@@ -273,17 +268,23 @@ const ChildTestResultsPage = () => {
       }));
     };
   
-    const calculateAverageGrade = (tests) => {
-      return Math.round(
-        tests.reduce((sum, test) => sum + test.grade, 0) / tests.length
-      );
+    const getGradeLevelValue = (gradeLevel) => {
+      switch (gradeLevel) {
+        case 'Weak': return 1;
+        case 'Average': return 2;
+        case 'Excellent': return 3;
+        default: return 0;
+      }
     };
   
-    const getOverallEvaluation = (avg) => {
-      if (avg < 30) return t('testsGrades.evaluation.weak');
-      if (avg < 60) return t('testsGrades.evaluation.moderate');
-      if (avg < 80) return t('testsGrades.evaluation.good');
-      return t('testsGrades.evaluation.very_good');
+    const calculateAverageGrade = (tests) => {
+      
+      const total = tests.reduce((sum, test) => sum + getGradeLevelValue(i18n.language === 'ar' ? test.gradeLevelAr : test.gradeLevelEn), 0);
+      const average = total / tests.length;
+      
+      if (average < 1.5) return 'Weak';
+      if (average < 2.5) return 'Average';
+      return 'Excellent';
     };
   
     if (loading) {
@@ -306,8 +307,7 @@ const ChildTestResultsPage = () => {
       );
     }
   
-    const averageGrade = calculateAverageGrade(childData.testGradesDtos);
-    const overallEvaluation = getOverallEvaluation(averageGrade);
+    const overallEvaluation = calculateAverageGrade(childData.testGradesDtos);
   
     return (
       <ResultsContainer dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
@@ -322,21 +322,27 @@ const ChildTestResultsPage = () => {
               key={test.testId}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <TestName>{test.testName}</TestName>
-              
-              <GradeCircle grade={test.grade}>
-                {test.grade}
+            {
+              i18n.language === 'ar' ? (
+                <TestName>{test.testNameAr}</TestName>
+              ) : (
+                <TestName>{test.testNameEn}</TestName>
+              )
+            }
+
+              <GradeCircle gradeLevel={test.gradeLevelEn}>
+                {test.testValue}
               </GradeCircle>
-              {i18n.language === 'ar' ? (
-                <EvaluationBadge evaluation={test.evaluation}>
-                {test.evaluationAr}
-              </EvaluationBadge>
-              ):(
-                <EvaluationBadge evaluation={test.evaluation}>
-                {test.evaluation}
-              </EvaluationBadge>
-              )}
               
+              {i18n.language === 'ar' ? (
+                <EvaluationBadge evaluation={test.gradeLevelAr}>
+                  {test.gradeLevelAr}
+                </EvaluationBadge>
+              ) : (
+                <EvaluationBadge evaluation={test.gradeLevelEn}>
+                  {test.gradeLevelEn}
+                </EvaluationBadge>
+              )}
               
               {test.howToEnhance && (
                 <>
@@ -354,7 +360,7 @@ const ChildTestResultsPage = () => {
                   
                   {visibleEnhance[test.testId] && (
                     <EnhanceContent>
-                     {i18n.language === 'ar' ? test.howToEnhanceAr : test.howToEnhance}
+                      {i18n.language === 'ar' ? test.howToEnhanceAr : test.howToEnhance}
                     </EnhanceContent>
                   )}
                 </>
@@ -362,10 +368,19 @@ const ChildTestResultsPage = () => {
             </TestCard>
           ))}
         </TestCardsContainer>
-       <BackButton to={`/addplayer/evaluatedTests/evaluatedCategories/${id}`}>
-          Evaluate Child
+
+        <SummarySection>
+          <SummaryHeading>{t('testsGrades.test_results.overall_evaluation')}</SummaryHeading>
+          <EvaluationBadge evaluation={overallEvaluation}>
+            {overallEvaluation}
+          </EvaluationBadge>
+        </SummarySection>
+        
+        <BackButton to={`/addplayer/evaluatedTests/evaluatedCategories/${id}`}>
+          {t('testsGrades.navigation.evaluate_child')}
         </BackButton>
       </ResultsContainer>
     );
-  };
+};
+
 export default ChildTestResultsPage;

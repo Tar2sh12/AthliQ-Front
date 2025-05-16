@@ -11,7 +11,7 @@ import { FaUserPlus, FaUsers } from 'react-icons/fa';
 
 const ChildrenPage = () => {
   const { t } = useTranslation();
-
+  
   return (
     <div style={{
       background: '#0a1128',
