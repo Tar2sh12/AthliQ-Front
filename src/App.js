@@ -15,6 +15,7 @@ import InstructionsPage from './pages/parents/InstructionsPage';
 import ChildrenPage from './pages/parents/ChildrenPage';
 import ChildTestResultsPage from './pages/parents/testsGrades.parent';
 import ChildCategoriesResultsPage from './pages/parents/EvaluateChild';
+import ChildDetailsPage from './pages/parents/childDetails.parent';
 const ProtectedRoute = ({ children }) => {
   const token = getAuthToken();
   if (!token.token) {
@@ -58,6 +59,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path='/childDetails/:id' element={<ChildDetailsPage/>}/>
         <Route
           path="/addplayer"
           element={

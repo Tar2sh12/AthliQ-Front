@@ -6,8 +6,6 @@ import { Row, Heading, TextWrapper } from "../../globalStyles";
 import {
   ButtonContainer,
   ReviewSlider,
-  ImageWrapper,
-  CarouselImage,
   CardButton,
 } from "../Carousel/CarouselStyles";
 import {
@@ -18,20 +16,22 @@ import {
   PaginationContainer,
   SearchContainer,
   SearchInput,
+  PlayerCard,
+  PlayerInfoWrapper,
 } from "./PricingStyles";
 import { getAuthToken } from "../../services/auth";
 import axios from "axios";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
 const Section = styled.section`
   padding: ${({ padding }) => (padding ? padding : "140px 0")};
   margin: ${({ margin }) => (margin ? margin : "")};
   background: ${({ inverse }) => (inverse ? "white" : "#071c2f")};
   position: ${({ position }) => (position ? position : "")};
-  width: ${({ width }) =>
-    width ? width : "100%"}; /* Changed from auto to 100% */
+  width: ${({ width }) => (width ? width : "100%")};
   min-width: ${({ minWidth }) => (minWidth ? minWidth : "auto")};
-  max-width: ${({ maxWidth }) =>
-    maxWidth ? maxWidth : "1200px"}; /* Reduced from 1500px */
+  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : "1200px")};
   height: ${({ height }) => (height ? height : "auto")};
   max-height: ${({ maxHeight }) => (maxHeight ? maxHeight : "auto")};
   min-height: ${({ minHeight }) => (minHeight ? minHeight : "auto")};
@@ -46,7 +46,7 @@ const Section = styled.section`
   }
 
   @media screen and (max-width: 768px) {
-    max-width: 90%; /* Changed to percentage for better responsiveness */
+    max-width: 90%;
     padding: ${({ smPadding }) => (smPadding ? smPadding : "40px 30px")};
   }
 
@@ -55,7 +55,26 @@ const Section = styled.section`
     padding: ${({ smPadding }) => (smPadding ? smPadding : "30px 20px")};
   }
 `;
+const DetailsButton = styled.button`
+  background: linear-gradient(to right, #4b6cb7, #182848);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
+  }
+`;
 function Pricing() {
   const [sliderRef, setSliderRef] = useState(null);
   const [players, setPlayers] = useState([]);
@@ -65,13 +84,8 @@ function Pricing() {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
-	const { t,i18n } = useTranslation();
-  // const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
-  };
-
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   // Debounce search term
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -88,19 +102,10 @@ function Pricing() {
     setCurrentPage(1);
   }, [debouncedSearchTerm]);
 
-
-
-  useEffect(() => {
-    console.log(i18n.language);
-    
-  }, [t]);
-
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const token = getAuthToken();
-        console.log(token.token);
-
         setLoading(true);
 
         await axios
@@ -108,23 +113,17 @@ function Pricing() {
             params: {
               pageSize: 6,
               pageIndex: currentPage,
-              search: debouncedSearchTerm, // Add search parameter
+              search: debouncedSearchTerm,
             },
             headers: {
               Authorization: `Bearer ${token.token}`,
             },
           })
           .then((response) => {
-            console.log(response.data.statusCode);
             if (response.data.statusCode === 200) {
-              //console.log(response);
-
               const data = response.data.value?.data || response.data.data;
-              console.log(data);
-
               setPlayers(data.children);
-              console.log(data.totalCount);
-              
+
               if (searchTerm === "") {
                 setTotalPages(Math.ceil(data.totalCount / 6));
               } else {
@@ -148,6 +147,7 @@ function Pricing() {
 
     fetchPlayers();
   }, [currentPage, debouncedSearchTerm]);
+
   const sliderSettings = {
     slidesToShow: Math.min(3, players.length),
     slidesToScroll: 1,
@@ -155,9 +155,9 @@ function Pricing() {
     arrows: players.length > 3,
     focusOnSelect: false,
     accessibility: false,
-    variableWidth: false, // Ensure consistent width
-    centerMode: players.length < 3, // Center items when fewer than 3
-    centerPadding: "0px", // No extra padding
+    variableWidth: false,
+    centerMode: players.length < 3,
+    centerPadding: "0px",
     responsive: [
       {
         breakpoint: 1280,
@@ -175,9 +175,11 @@ function Pricing() {
       },
     ],
   };
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+
   const calculateAge = (dateString) => {
     const today = new Date();
     const birthDate = new Date(dateString);
@@ -188,140 +190,143 @@ function Pricing() {
 
     if (yearDiff > 0) {
       if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-        return `${yearDiff - 1} ${t('years old')}`;
+        return `${yearDiff - 1} ${t("years old")}`;
       }
-      return `${yearDiff} ${t('years old')}`;
+      return `${yearDiff} ${t("years old")}`;
     } else if (monthDiff > 0) {
       return `${monthDiff} months old`;
     } else {
       return `${Math.max(dayDiff, 0)} days old`;
     }
   };
+
   return (
-    <>
-      <IconContext.Provider value={{ color: "#a9b3c1", size: "1rem" }}>
-        <PricingSection id="pricing">
-          <PricingWrapper>
-            <Heading>{t("Your Players")}</Heading>
+    <IconContext.Provider value={{ color: "#a9b3c1", size: "1rem" }}>
+      <PricingSection id="pricing">
+        <PricingWrapper>
+          <Heading>{t("Your Players")}</Heading>
 
-            {/* Add Search Bar */}
-            <SearchContainer>
-              <SearchInput
-                type="text"
-                placeholder={t("Search players...")}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </SearchContainer>
+          <SearchContainer>
+            <SearchInput
+              type="text"
+              placeholder={t("Search players...")}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </SearchContainer>
 
-            {loading ? (
-              <div style={{ color: "white" }}>{t("Loading...")}</div>
-            ) : players.length === 0 ? (
-              <div style={{ color: "white" }}>{t("No players found")}</div>
-            ) : error ? (
-              <div>{error}</div>
-            ) : (
-              <>
-                {/* <Carousel /> */}
-                <Section
-                  margin="auto"
-                  maxWidth="1500px"
-                  padding="50px 70px"
-                  inverse
-                >
-                  <Row justify="space-between" margin="1rem" wrap="wrap">
-                    <Heading width="auto" inverse>
-                      {t("Your Players")}
-                    </Heading>
-                    {players.length > 3 && (
-                      <ButtonContainer>
-                        <IconContext.Provider
-                          value={{ size: "3rem", color: "#1d609c" }}
-                        >
-                          <FaArrowCircleLeft onClick={sliderRef?.slickPrev} />
-                          <FaArrowCircleRight onClick={sliderRef?.slickNext} />
-                        </IconContext.Provider>
-                      </ButtonContainer>
-                    )}
-                  </Row>
-
-                  {players.length === 0 ? (
-                    <EmptyState>
-                      <TextWrapper size="1.2rem" margin="1rem 0">
-                        {t("No players found. Add some players to get started!")}
-                      </TextWrapper>
-                    </EmptyState>
-                  ) : (
-                    <>
-                      <ReviewSlider {...sliderSettings} ref={setSliderRef}>
-                        {players.map((el, index) => (
-                          <ImageWrapper key={index}>
-                            <CarouselImage src="./assets/clients.jpg" />
-                            <TextWrapper
-                              size="1.1rem"
-                              margin="0.4rem 0 0"
-                              weight="bold"
-                            >
-                              {el.name}
-                            </TextWrapper>
-                            <TextWrapper
-                              size="0.9rem"
-                              margin="0.7rem"
-                              color="#4f4f4f"
-                            >
-                              {t(`${el.gender}`)}
-                            </TextWrapper>
-                            <TextWrapper
-                              size="1.1rem"
-                              margin="0.4rem 0 0"
-                              weight="bold"
-                            >
-                              {calculateAge(el.dateOfBirth)}
-                            </TextWrapper>
-
-                            <CardButton>{i18n.language==="en"?el.category:el.categoryAr}</CardButton>
-                          </ImageWrapper>
-                        ))}
-                      </ReviewSlider>
-                    </>
+          {loading ? (
+            <div style={{ color: "white" }}>{t("Loading...")}</div>
+          ) : players.length === 0 ? (
+            <div style={{ color: "white" }}>{t("No players found")}</div>
+          ) : error ? (
+            <div>{error}</div>
+          ) : (
+            <>
+              <Section
+                margin="auto"
+                maxWidth="1500px"
+                padding="50px 70px"
+                inverse
+              >
+                <Row justify="space-between" margin="1rem" wrap="wrap">
+                  <Heading width="auto" inverse>
+                    {t("Your Players")}
+                  </Heading>
+                  {players.length > 3 && (
+                    <ButtonContainer>
+                      <IconContext.Provider
+                        value={{ size: "3rem", color: "#1d609c" }}
+                      >
+                        <FaArrowCircleLeft onClick={sliderRef?.slickPrev} />
+                        <FaArrowCircleRight onClick={sliderRef?.slickNext} />
+                      </IconContext.Provider>
+                    </ButtonContainer>
                   )}
-                </Section>
-                {/* Add Pagination */}
-                {totalPages > 1 && (
-                  <PaginationContainer>
-                    <PageButton
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      Previous
-                    </PageButton>
+                </Row>
 
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (page) => (
-                        <PageButton
-                          key={page}
-                          onClick={() => handlePageChange(page)}
-                          active={page === currentPage}
+                {players.length === 0 ? (
+                  <EmptyState>
+                    <TextWrapper size="1.2rem" margin="1rem 0">
+                      {t("No players found. Add some players to get started!")}
+                    </TextWrapper>
+                  </EmptyState>
+                ) : (
+                  <ReviewSlider {...sliderSettings} ref={setSliderRef}>
+                    {players.map((el, index) => (
+                      <PlayerCard key={index}>
+                        <PlayerInfoWrapper>
+                          <TextWrapper
+                            size="1.5rem"
+                            margin="0.4rem 0 0"
+                            weight="bold"
+                          >
+                            {el.name}
+                          </TextWrapper>
+                          <TextWrapper
+                            size="1rem"
+                            margin="0.7rem"
+                            color="#4f4f4f"
+                          >
+                            {t(`${el.gender}`)}
+                          </TextWrapper>
+                          <TextWrapper
+                            size="1.1rem"
+                            margin="0.4rem 0 0"
+                            weight="bold"
+                          >
+                            {calculateAge(el.dateOfBirth)}
+                          </TextWrapper>
+                        </PlayerInfoWrapper>
+                        <CardButton>
+                          {i18n.language === "en" ? el.category : el.categoryAr}
+                        </CardButton>
+                        <DetailsButton
+                          onClick={() => navigate(`/childDetails/${el.id}`)}
                         >
-                          {page}
-                        </PageButton>
-                      )
-                    )}
-
-                    <PageButton
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </PageButton>
-                  </PaginationContainer>
+                          {t("View Details")}
+                        </DetailsButton>
+                      </PlayerCard>
+                    ))}
+                  </ReviewSlider>
                 )}
-              </>
-            )}
-          </PricingWrapper>
-        </PricingSection>
-      </IconContext.Provider>
-    </>
+              </Section>
+
+              {totalPages > 1 && (
+                <PaginationContainer>
+                  <PageButton
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    {t("Previous")}
+                  </PageButton>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <PageButton
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        active={page === currentPage}
+                      >
+                        {page}
+                      </PageButton>
+                    )
+                  )}
+
+                  <PageButton
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    {t("Next")}
+                  </PageButton>
+                </PaginationContainer>
+              )}
+            </>
+          )}
+        </PricingWrapper>
+      </PricingSection>
+    </IconContext.Provider>
   );
 }
+
 export default Pricing;

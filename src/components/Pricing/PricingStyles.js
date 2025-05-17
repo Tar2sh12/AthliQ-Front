@@ -184,3 +184,36 @@ export const EmptyState = styled.div`
   border-radius: 8px;
   text-align: center;
 `;
+
+export const PlayerCard = styled.div`
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 250px;
+  transition: all 0.3s ease;
+  border: 1px solid #eaeaea;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  @media screen and (max-width: 768px) {
+    height: auto;
+    padding: 1.5rem;
+  }
+`;
+
+export const PlayerInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+`;

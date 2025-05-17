@@ -29,11 +29,35 @@ const InstructionsPage = () => {
           {t("Welcome Instruction")}
         </InstructionText>
 
+        <SectionTitle>{t("Health Safety First")}</SectionTitle>
+        <InstructionList>
+          <InstructionItem>
+            <Trans i18nKey="Health Safety Item 1" components={{ 1: <ImportantNote /> }} />
+          </InstructionItem>
+          <InstructionItem>
+            <Trans i18nKey="Health Safety Item 2" components={{ 1: <ImportantNote /> }} />
+          </InstructionItem>
+          <InstructionItem>
+            <Trans i18nKey="Health Safety Item 3" components={{ 1: <ImportantNote /> }} />
+          </InstructionItem>
+        </InstructionList>
+
+        <SectionTitle>{t("Personal Responsibility")}</SectionTitle>
+        <InstructionList>
+          <InstructionItem>
+            <Trans i18nKey="Responsibility Item 1" components={{ 1: <ImportantNote /> }} />
+          </InstructionItem>
+          <InstructionItem>
+            <Trans i18nKey="Responsibility Item 2" components={{ 1: <ImportantNote /> }} />
+          </InstructionItem>
+        </InstructionList>
+
         <SectionTitle>{t("Why Your Input Matters")}</SectionTitle>
         <InstructionText>
           <Trans i18nKey="Input Matters Text" components={{ 1: <ImportantNote /> }} />
         </InstructionText>
 
+        {/* Rest of your existing sections */}
         <SectionTitle>{t("Accuracy is Key")}</SectionTitle>
         <InstructionList>
           <InstructionItem>
