@@ -17,6 +17,7 @@ import ChildTestResultsPage from './pages/parents/testsGrades.parent';
 import ChildCategoriesResultsPage from './pages/parents/EvaluateChild';
 import ChildDetailsPage from './pages/parents/childDetails.parent';
 import AdminDashboard from './pages/Admin/dashboard';
+import UserRegistrationAdmin from './pages/Admin/acceptOrRejectUsers.admin';
 const ProtectedRoute = ({ children }) => {
   const token = getAuthToken();
   if (!token.token) {
@@ -75,6 +76,7 @@ function App() {
         <Route path="/addplayer/evaluatedTests/:id" element={<ChildTestResultsPage/>} />
         <Route path="/addplayer/evaluatedTests/evaluatedCategories/:id" element={<ChildCategoriesResultsPage/>} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/acceptOrRejectUsers" element={<UserRegistrationAdmin />} />
       </Routes>
       <Footer />
     </Router>

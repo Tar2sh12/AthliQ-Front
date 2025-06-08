@@ -9,6 +9,8 @@ import signInFormEn from "./localize/loginEn.json";
 import signInFormAr from "./localize/loginAr.json";
 import testsGradesEn from "./localize/testsGradesEn.json";
 import testsGradesAr from "./localize/testsGradesAr.json";
+import adminAcceptUsersAr from "./localize/acceptOrRejectAr.json";
+import adminAcceptUsersEn from "./localize/acceptOrRejectEn.json";
 const resources = {
   en: {
     translation: {
@@ -160,13 +162,18 @@ const resources = {
       "Closing Instruction":
         "By entering accurate and honest results, you help us give you the best possible recommendation tailored to your abilities. We're excited to help you find the right path in sports!",
       "Accept Terms": "I have read and understood all instructions",
-        "Health Safety First": "Health Safety First",
-  "Health Safety Item 1": "Consult with a <1>healthcare professional</1> before attempting any physical tests if you have pre-existing conditions.",
-  "Health Safety Item 2": "Stop immediately and seek medical attention if you experience <1>dizziness, pain, or discomfort</1> during testing.",
-  "Health Safety Item 3": "Ensure you have a <1>spotter or supervisor</1> present for tests requiring balance or heavy exertion.",
-  "Personal Responsibility": "Personal Responsibility",
-  "Responsibility Item 1": "You are <1>solely responsible</1> for your health and safety during these physical tests.",
-  "Responsibility Item 2": "The platform and its affiliates <1>cannot be held liable</1> for any injuries sustained during testing.",
+      "Health Safety First": "Health Safety First",
+      "Health Safety Item 1":
+        "Consult with a <1>healthcare professional</1> before attempting any physical tests if you have pre-existing conditions.",
+      "Health Safety Item 2":
+        "Stop immediately and seek medical attention if you experience <1>dizziness, pain, or discomfort</1> during testing.",
+      "Health Safety Item 3":
+        "Ensure you have a <1>spotter or supervisor</1> present for tests requiring balance or heavy exertion.",
+      "Personal Responsibility": "Personal Responsibility",
+      "Responsibility Item 1":
+        "You are <1>solely responsible</1> for your health and safety during these physical tests.",
+      "Responsibility Item 2":
+        "The platform and its affiliates <1>cannot be held liable</1> for any injuries sustained during testing.",
       Next: "Next",
       /**
        * No players found
@@ -175,42 +182,43 @@ const resources = {
       "No players found": "No players found",
       "Loading...": "Loading...",
       "Search players...": "Search players...",
+      adminAcceptUsers:adminAcceptUsersEn,
       childManagement: childManagementEn,
       addPlayer: addPlayerFormEn,
       auth: signInFormEn.auth,
       testsGrades: testsGradesEn,
-      "childDetails": {
-    "navigation": {
-      "back": "Back",
-      "back_to_players": "Back to Players"
-    },
-    "common": {
-      "error": "Error",
-      "no_data": "No child data found",
-      "years_old": "years old"
-    },
-    "error": {
-      "fetching_data": "Error fetching child data"
-    },
-    "gender": {
-      "male": "Male",
-      "female": "Female"
-    },
-    "height": "Height",
-    "weight": "Weight",
-    "images": {
-      "front_view": "Front view",
-      "side_view": "Side view"
-    },
-    "sections": {
-      "physical_attributes": "Physical Attributes",
-      "recommended_category": "Recommended Category",
-      "recommended_sports": "Recommended Sports",
-      "test_results": "Test Results",
-      "preferred_sports": "Preferred Sports",
-      "parent_sports_history": "Parent Sports History"
-    }
-  }
+      childDetails: {
+        navigation: {
+          back: "Back",
+          back_to_players: "Back to Players",
+        },
+        common: {
+          error: "Error",
+          no_data: "No child data found",
+          years_old: "years old",
+        },
+        error: {
+          fetching_data: "Error fetching child data",
+        },
+        gender: {
+          male: "Male",
+          female: "Female",
+        },
+        height: "Height",
+        weight: "Weight",
+        images: {
+          front_view: "Front view",
+          side_view: "Side view",
+        },
+        sections: {
+          physical_attributes: "Physical Attributes",
+          recommended_category: "Recommended Category",
+          recommended_sports: "Recommended Sports",
+          test_results: "Test Results",
+          preferred_sports: "Preferred Sports",
+          parent_sports_history: "Parent Sports History",
+        },
+      },
     },
   },
   ar: {
@@ -362,13 +370,18 @@ const resources = {
       "Closing Instruction":
         "من خلال إدخال نتائج دقيقة وصادقة، تساعدنا في تقديم أفضل توصية ممكنة مصممة خصيصًا لقدراتك. نحن متحمسون لمساعدتك في العثور على المسار الصحيح في الرياضة!",
       "Accept Terms": "لقد قرأت وفهمت جميع التعليمات",
-        "Health Safety First": "السلامة الصحية أولاً",
-  "Health Safety Item 1": "استشر <1>أخصائي رعاية صحية</1> قبل إجراء أي اختبارات بدنية إذا كنت تعاني من حالات صحية سابقة.",
-  "Health Safety Item 2": "توقف فورًا واطلب العناية الطبية إذا شعرت بـ<1>الدوخة أو الألم أو عدم الراحة</1> أثناء الاختبار.",
-  "Health Safety Item 3": "تأكد من وجود <1>مرافق أو مشرف</1> معك للاختبارات التي تتطلب التوازن أو المجهود الكبير.",
-  "Personal Responsibility": "المسؤولية الشخصية",
-  "Responsibility Item 1": "أنت <1>المسؤول الوحيد</1> عن صحتك وسلامتك أثناء هذه الاختبارات البدنية.",
-  "Responsibility Item 2": "لا يمكن تحميل المنصة أو الجهات التابعة لها <1>أي مسؤولية</1> عن أي إصابات تحدث أثناء الاختبار.",
+      "Health Safety First": "السلامة الصحية أولاً",
+      "Health Safety Item 1":
+        "استشر <1>أخصائي رعاية صحية</1> قبل إجراء أي اختبارات بدنية إذا كنت تعاني من حالات صحية سابقة.",
+      "Health Safety Item 2":
+        "توقف فورًا واطلب العناية الطبية إذا شعرت بـ<1>الدوخة أو الألم أو عدم الراحة</1> أثناء الاختبار.",
+      "Health Safety Item 3":
+        "تأكد من وجود <1>مرافق أو مشرف</1> معك للاختبارات التي تتطلب التوازن أو المجهود الكبير.",
+      "Personal Responsibility": "المسؤولية الشخصية",
+      "Responsibility Item 1":
+        "أنت <1>المسؤول الوحيد</1> عن صحتك وسلامتك أثناء هذه الاختبارات البدنية.",
+      "Responsibility Item 2":
+        "لا يمكن تحميل المنصة أو الجهات التابعة لها <1>أي مسؤولية</1> عن أي إصابات تحدث أثناء الاختبار.",
       Next: "التالي",
       /**
        * No players found
@@ -377,42 +390,43 @@ const resources = {
       "No players found": "لا يوجد لديك لاعبين",
       "Loading...": "جاري التحميل...",
       "Search players...": "ابحث عن لاعبين...",
+      adminAcceptUsers:adminAcceptUsersAr,
       childManagement: childManagementAr,
       addPlayer: addPlayerFormAr,
       auth: signInFormAr.auth,
       testsGrades: testsGradesAr,
-       "childDetails": {
-    "navigation": {
-      "back": "رجوع",
-      "back_to_players": "العودة إلى اللاعبين"
-    },
-    "common": {
-      "error": "خطأ",
-      "no_data": "لا توجد بيانات للطفل",
-      "years_old": "سنة"
-    },
-    "error": {
-      "fetching_data": "خطأ في جلب بيانات الطفل"
-    },
-    "gender": {
-      "male": "ذكر",
-      "female": "أنثى"
-    },
-    "height": "الطول",
-    "weight": "الوزن",
-    "images": {
-      "front_view": "منظر أمامي",
-      "side_view": "منظر جانبي"
-    },
-    "sections": {
-      "physical_attributes": "الخصائص البدنية",
-      "recommended_category": "الفئة الموصى بها",
-      "recommended_sports": "الرياضات الموصى بها",
-      "test_results": "نتائج الاختبارات",
-      "preferred_sports": "الرياضات المفضلة",
-      "parent_sports_history": "تاريخ الرياضة للوالدين"
-    }
-  }
+      childDetails: {
+        navigation: {
+          back: "رجوع",
+          back_to_players: "العودة إلى اللاعبين",
+        },
+        common: {
+          error: "خطأ",
+          no_data: "لا توجد بيانات للطفل",
+          years_old: "سنة",
+        },
+        error: {
+          fetching_data: "خطأ في جلب بيانات الطفل",
+        },
+        gender: {
+          male: "ذكر",
+          female: "أنثى",
+        },
+        height: "الطول",
+        weight: "الوزن",
+        images: {
+          front_view: "منظر أمامي",
+          side_view: "منظر جانبي",
+        },
+        sections: {
+          physical_attributes: "الخصائص البدنية",
+          recommended_category: "الفئة الموصى بها",
+          recommended_sports: "الرياضات الموصى بها",
+          test_results: "نتائج الاختبارات",
+          preferred_sports: "الرياضات المفضلة",
+          parent_sports_history: "تاريخ الرياضة للوالدين",
+        },
+      },
     },
   },
 };

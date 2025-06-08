@@ -1,0 +1,32 @@
+{
+  "admin": {
+    "title": "User Registration Approval",
+    "searchPlaceholder": "Search for users...",
+    "stats": {
+      "totalPending": "Total Pending",
+      "approvedToday": "Approved Today",
+      "rejectedToday": "Rejected Today"
+    },
+    "table": {
+      "title": "Pending User Registration Requests",
+      "headers": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "regDate": "Registration Date",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      }
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch user data",
+      "approveFailed": "Failed to approve user {userId}",
+      "rejectFailed": "Failed to reject user {userId}"
+    }
+  }
+}

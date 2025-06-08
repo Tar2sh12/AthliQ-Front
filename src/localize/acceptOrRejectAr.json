@@ -1,0 +1,32 @@
+{
+  "admin": {
+    "title": "موافقة تسجيل المستخدم",
+    "searchPlaceholder": "ابحث عن مستخدمين...",
+    "stats": {
+      "totalPending": "إجمالي المعلقة",
+      "approvedToday": "تمت الموافقة اليوم",
+      "rejectedToday": "تم الرفض اليوم"
+    },
+    "table": {
+      "title": "طلبات تسجيل المستخدمين المعلقة",
+      "headers": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "role": "الدور",
+        "regDate": "تاريخ التسجيل",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "pending": "معلق",
+        "approved": "تمت الموافقة",
+        "rejected": "مرفوض"
+      }
+    },
+    "errors": {
+      "fetchFailed": "فشل جلب بيانات المستخدمين",
+      "approveFailed": "فشل الموافقة على المستخدم {userId}",
+      "rejectFailed": "فشل رفض المستخدم {userId}"
+    }
+  }
+}
