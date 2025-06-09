@@ -526,19 +526,19 @@ const UserRegistrationAdmin = () => {
                       <ActionButton
                         accept
                         onClick={() => handleApprove(user.id)}
-                        // disabled={
-                        //   user.status !== "pending" ||
-                        //   processingIds.includes(user.id)
-                        // }
+                        disabled={
+                          user.status !== "pending" ||
+                          processingIds.includes(user.id)
+                        }
                       >
                         <FaCheck />
                       </ActionButton>
                       <ActionButton
                         onClick={() => handleReject(user.id)}
-                        // disabled={
-                        //   user.status !== "pending" ||
-                        //   processingIds.includes(user.id)
-                        // }
+                        disabled={
+                          user.status == "pending" ||
+                          processingIds.includes(user.id)
+                        }
                       >
                         <FaTimes />
                       </ActionButton>
