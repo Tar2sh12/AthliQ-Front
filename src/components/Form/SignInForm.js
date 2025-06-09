@@ -52,7 +52,7 @@ const SignInForm = () => {
             console.log(user[role]);
 
             if (user[role] == "Admin") {
-              navigate("/");
+              navigate("/adminHomePage");
             } else if (user[role] == "User") {
               navigate("/");
             }

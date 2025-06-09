@@ -20,21 +20,32 @@ import { useTranslation } from "react-i18next"; // Add this import
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
-  const { t, i18n } = useTranslation(); // Initialize translation
+  const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const { user } = getAuthToken();
   const isLoggedIn = !!user;
-  const role = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+  const roleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+  const userRole = user?.[roleClaim];
   const navigate = useNavigate();
   let location = useLocation();
 
   // Filter the navigation items based on role and logged-in status
-  const filteredNavItems = data(t).filter((item) => {
+const filteredNavItems = data(t).filter((item) => {
     if (item.role === "not loggedin") {
       return !isLoggedIn;
-    } else {
-      return isLoggedIn && (user[role] === item.role || item.role === "User");
     }
+    
+    // For logged-in users
+    if (isLoggedIn) {
+      // Show items for specific roles OR general user items
+      // For logged-in users
+  if (isLoggedIn) {
+    // Show items ONLY for the user's exact role
+    return item.role === userRole;
+  }
+    }
+    
+    return false;
   });
 
   const handleClick = () => {
