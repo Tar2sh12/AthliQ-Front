@@ -17,34 +17,36 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { data } from "../../data/NavbarData";
 import { getAuthToken, removeAuthToken } from "../../services/auth.jsx";
 import { useTranslation } from "react-i18next"; // Add this import
-
+import englishLogo from "../../assets/logo-Ph2.png";
+import arabicLogo from "../../assets/arabicLogo.png";
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const { user } = getAuthToken();
   const isLoggedIn = !!user;
-  const roleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+  const roleClaim =
+    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
   const userRole = user?.[roleClaim];
   const navigate = useNavigate();
   let location = useLocation();
 
   // Filter the navigation items based on role and logged-in status
-const filteredNavItems = data(t).filter((item) => {
+  const filteredNavItems = data(t).filter((item) => {
     if (item.role === "not loggedin") {
       return !isLoggedIn;
     }
-    
+
     // For logged-in users
     if (isLoggedIn) {
       // Show items for specific roles OR general user items
       // For logged-in users
-  if (isLoggedIn) {
-    // Show items ONLY for the user's exact role
-    return item.role === userRole;
-  }
+      if (isLoggedIn) {
+        // Show items ONLY for the user's exact role
+        return item.role === userRole;
+      }
     }
-    
+
     return false;
   });
 
@@ -84,11 +86,7 @@ const filteredNavItems = data(t).filter((item) => {
         <NavbarContainer>
           <NavLogo to="/">
             <NavIcon
-              src={
-                i18n.language == "en"
-                  ? "./assets/logo-ph2.png"
-                  : "./assets/arabicLogo.png"
-              }
+              src={i18n.language === "en" ? englishLogo : arabicLogo}
               style={{ width: "190px" }}
               alt="logo"
             />
