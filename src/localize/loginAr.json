@@ -12,6 +12,8 @@
         "errors": {
           "required": "هذا الحقل مطلوب",
           "invalidEmail": "الرجاء إدخال بريد إلكتروني صحيح"
+          ,
+          "Admin didn't Accept Your Request Yet": "لم يقبل الادمن طلبك بعد"
         }
       }
     }
