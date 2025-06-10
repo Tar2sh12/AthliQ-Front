@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	FooterLinkItems,
 	FooterLinkTitle,
@@ -14,15 +14,19 @@ import {
 } from './FooterStyles';
 import { footerData, footerSocialData } from '../../data/FooterData';
 import { Row, Section } from '../../globalStyles';
-
+import englishLogo from "../../assets/logo-Ph2.png";
+import arabicLogo from "../../assets/arabicLogo.png";
+import { useTranslation } from 'react-i18next';
 function Footer() {
+	const { t, i18n } = useTranslation();
+	  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 	return (
 		<Section padding="4rem 0 2rem 0">
 			<FooterWrapper>
 				<FooterGrid justify="space-between">
 					<FooterColumn id="footerLogo">
 						<FooterLogo to="/">
-							<SocialIcon src="./assets/logo-Ph2.png" />
+							<SocialIcon src={i18n.language === "en" ? englishLogo : arabicLogo} />
 							
 						</FooterLogo>
 						<FooterAddress>

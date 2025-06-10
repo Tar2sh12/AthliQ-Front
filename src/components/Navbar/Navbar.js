@@ -84,7 +84,7 @@ const Navbar = () => {
     <IconContext.Provider value={{ color: "#fff" }}>
       <Nav>
         <NavbarContainer>
-          <NavLogo to="/">
+          <NavLogo to={userRole==="Admin"?"/adminHomePage":"/"}>
             <NavIcon
               src={i18n.language === "en" ? englishLogo : arabicLogo}
               style={{ width: "190px" }}
@@ -97,9 +97,10 @@ const Navbar = () => {
             {currentLanguage === 'en' ? 'English':'العربية' }
           </LanguageButton>
            */}
-          <LanguageButton onClick={toggleLanguage}>
+
+         {userRole!=="Admin" && <LanguageButton onClick={toggleLanguage}>
             {currentLanguage === "en" ? "English" : "العربية"}
-          </LanguageButton>
+          </LanguageButton>}
 
           <MobileIcon onClick={handleClick} lang={currentLanguage}>
             {show ? <FaTimes /> : <CgMenuRight />}

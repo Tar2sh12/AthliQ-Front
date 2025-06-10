@@ -79,7 +79,7 @@ function App() {
         {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
         <Route path="/addplayer/evaluatedTests/:id" element={<ChildTestResultsPage/>} />
         <Route path="/addplayer/evaluatedTests/evaluatedCategories/:id" element={<ChildCategoriesResultsPage/>} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* <Route path="/admin" element={<AdminDashboard />} /> */}
         <Route path="/admin/acceptOrRejectUsers" element={<UserRegistrationAdmin />} />
         <Route path="/admin/categories" element={<CategoryManagement />} />
         <Route path="/admin/tests" element={<TestManagement />} />
