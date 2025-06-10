@@ -22,12 +22,58 @@ import AdminDashboardHome from './pages/Admin/home.admin';
 import CategoryManagement from './pages/Admin/categoryManagement.admin';
 import TestManagement from './pages/Admin/testManagement.admin';
 import SportManagement from './pages/Admin/sportsManagement.admin';
-const ProtectedRoute = ({ children }) => {
-  const token = getAuthToken();
-  if (!token.token) {
+
+// Role-based protection components
+const ProtectedRoute = ({ children, requiredRole = null }) => {
+  const { user, token } = getAuthToken();
+  const roleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+  const userRole = user?.[roleClaim];
+
+  // Check if user is authenticated
+  if (!token || !user) {
     return <Navigate to="/login" replace />;
   }
+
+  // Check if specific role is required
+  if (requiredRole && userRole !== requiredRole) {
+    // Redirect based on user's actual role
+    if (userRole === 'Admin') {
+      return <Navigate to="/adminHomePage" replace />;
+    } else if (userRole === 'User') {
+      return <Navigate to="/children" replace />;
+    } else {
+      return <Navigate to="/login" replace />;
+    }
+  }
+
   return children;
+};
+
+// Admin-only route wrapper
+const AdminRoute = ({ children }) => {
+  return (
+    <ProtectedRoute requiredRole="Admin">
+      {children}
+    </ProtectedRoute>
+  );
+};
+
+// User-only route wrapper
+const UserRoute = ({ children }) => {
+  return (
+    <ProtectedRoute requiredRole="User">
+      {children}
+    </ProtectedRoute>
+  );
+};
+
+// General authenticated route (any logged-in user)
+const AuthenticatedRoute = ({ children }) => {
+  return (
+    <ProtectedRoute>
+      {children}
+    </ProtectedRoute>
+  );
 };
 
 function App() {
@@ -39,57 +85,136 @@ function App() {
         {/* Public routes */}
         <Route path="/login" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={ <Home />} />
-        {/* Protected routes */}
+        <Route path="/" element={<Home />} />
+
+        {/* User-only routes */}
         <Route
           path="/players"
           element={
-            <ProtectedRoute>
+            <UserRoute>
               <Pricing />
-            </ProtectedRoute>
+            </UserRoute>
           }
         />
-      <Route
+        <Route
           path="/instructions"
           element={
-            <ProtectedRoute>
-              <InstructionsPage/>
-            </ProtectedRoute>
+            <UserRoute>
+              <InstructionsPage />
+            </UserRoute>
           }
         />
         <Route
           path="/children"
           element={
-            <ProtectedRoute>
-             <ChildrenPage/>
-            </ProtectedRoute>
+            <UserRoute>
+              <ChildrenPage />
+            </UserRoute>
           }
         />
-        <Route path='/childDetails/:id' element={<ChildDetailsPage/>}/>
         <Route
           path="/addplayer"
           element={
-            <ProtectedRoute>
+            <UserRoute>
               <AddPlayerForm />
-            </ProtectedRoute>
+            </UserRoute>
           }
         />
-        
-        {/* Redirect invalid paths to login */}
-        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-        <Route path="/addplayer/evaluatedTests/:id" element={<ChildTestResultsPage/>} />
-        <Route path="/addplayer/evaluatedTests/evaluatedCategories/:id" element={<ChildCategoriesResultsPage/>} />
-        {/* <Route path="/admin" element={<AdminDashboard />} /> */}
-        <Route path="/admin/acceptOrRejectUsers" element={<UserRegistrationAdmin />} />
-        <Route path="/admin/categories" element={<CategoryManagement />} />
-        <Route path="/admin/tests" element={<TestManagement />} />
-        <Route path="/adminHomePage" element={<AdminDashboardHome/>}/>
-        <Route path="/admin/sports" element={<SportManagement/>}/>
-        {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
+
+        {/* These routes might need role checking too - assuming User access for now */}
+        <Route 
+          path='/childDetails/:id' 
+          element={
+            <UserRoute>
+              <ChildDetailsPage />
+            </UserRoute>
+          }
+        />
+        <Route 
+          path="/addplayer/evaluatedTests/:id" 
+          element={
+            <UserRoute>
+              <ChildTestResultsPage />
+            </UserRoute>
+          }
+        />
+        <Route 
+          path="/addplayer/evaluatedTests/evaluatedCategories/:id" 
+          element={
+            <UserRoute>
+              <ChildCategoriesResultsPage />
+            </UserRoute>
+          }
+        />
+
+        {/* Admin-only routes */}
+        <Route 
+          path="/admin/acceptOrRejectUsers" 
+          element={
+            <AdminRoute>
+              <UserRegistrationAdmin />
+            </AdminRoute>
+          }
+        />
+        <Route 
+          path="/admin/categories" 
+          element={
+            <AdminRoute>
+              <CategoryManagement />
+            </AdminRoute>
+          }
+        />
+        <Route 
+          path="/admin/tests" 
+          element={
+            <AdminRoute>
+              <TestManagement />
+            </AdminRoute>
+          }
+        />
+        <Route 
+          path="/adminHomePage" 
+          element={
+            <AdminRoute>
+              <AdminDashboardHome />
+            </AdminRoute>
+          }
+        />
+        <Route 
+          path="/admin/sports" 
+          element={
+            <AdminRoute>
+              <SportManagement />
+            </AdminRoute>
+          }
+        />
+
+        {/* Catch-all route - redirect based on role or to login */}
+        <Route path="*" element={<RoleBasedRedirect />} />
       </Routes>
       <Footer />
     </Router>
   );
 }
+
+// Component to handle role-based redirects for invalid routes
+const RoleBasedRedirect = () => {
+  const { user, token } = getAuthToken();
+  const roleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+  const userRole = user?.[roleClaim];
+
+  if (!token || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Redirect to appropriate dashboard based on role
+  if (userRole === 'Admin') {
+    return <Navigate to="/adminHomePage" replace />;
+  } else if (userRole === 'User') {
+    return <Navigate to="/children" replace />;
+  } else {
+    return <Navigate to="/login" replace />;
+  }
+};
 
 export default App;
