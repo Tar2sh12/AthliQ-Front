@@ -332,14 +332,14 @@ const AdminDashboardHome = () => {
     },
     {
       title: "Sports",
-      description: "Add, edit, and organize sports activities and events",
+      description: "Add, edit, and organize sports",
       icon: <FaFootballBall />,
       route: "/admin/sports",
       stats: `${stats.totalSports} Sports`,
     },
     {
       title: "Tests",
-      description: "Create and manage tests, quizzes, and assessments",
+      description: "Create and manage tests",
       icon: <FaClipboardList />,
       route: "/admin/tests",
       stats: `${stats.totalTests} Tests`,

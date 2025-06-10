@@ -20,6 +20,8 @@ import AdminDashboard from './pages/Admin/dashboard';
 import UserRegistrationAdmin from './pages/Admin/acceptOrRejectUsers.admin';
 import AdminDashboardHome from './pages/Admin/home.admin';
 import CategoryManagement from './pages/Admin/categoryManagement.admin';
+import TestManagement from './pages/Admin/testManagement.admin';
+import SportManagement from './pages/Admin/sportsManagement.admin';
 const ProtectedRoute = ({ children }) => {
   const token = getAuthToken();
   if (!token.token) {
@@ -80,7 +82,10 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/acceptOrRejectUsers" element={<UserRegistrationAdmin />} />
         <Route path="/admin/categories" element={<CategoryManagement />} />
+        <Route path="/admin/tests" element={<TestManagement />} />
         <Route path="/adminHomePage" element={<AdminDashboardHome/>}/>
+        <Route path="/admin/sports" element={<SportManagement/>}/>
+        {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
       </Routes>
       <Footer />
     </Router>
