@@ -359,22 +359,34 @@ const ChildTestResultsPage = () => {
                   </EnhanceButton>
                   
                   {visibleEnhance[test.testId] && (
-                    <EnhanceContent>
-                      {i18n.language === 'ar' ? test.howToEnhanceAr : test.howToEnhance}
-                    </EnhanceContent>
+                   <>
+                    {i18n.language  === 'ar' ? (
+                test.howToEnhancAr.split("\n").map((line, index) => (
+                      <EnhanceContent key={index}>
+                        {line}
+                      </EnhanceContent>
+                    ))
+              ) : (
+               test.howToEnhance.split("\n").map((line, index) => (
+                      <EnhanceContent key={index}>
+                        {line}
+                      </EnhanceContent>
+                    ))
+              )}
+           </>
                   )}
                 </>
               )}
             </TestCard>
           ))}
         </TestCardsContainer>
-
+{/* 
         <SummarySection>
           <SummaryHeading>{t('testsGrades.test_results.overall_evaluation')}</SummaryHeading>
           <EvaluationBadge evaluation={overallEvaluation}>
             {overallEvaluation}
           </EvaluationBadge>
-        </SummarySection>
+        </SummarySection> */}
         
         <BackButton to={`/addplayer/evaluatedTests/evaluatedCategories/${id}`}>
           {t('testsGrades.navigation.evaluate_child')}

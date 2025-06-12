@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { getAuthToken } from '../../services/auth';
 import axios from 'axios';
-import { FaArrowLeft, FaRunning, FaBalanceScale, FaHeartbeat, FaSchool, FaUsers } from 'react-icons/fa';
+import { FaArrowLeft, FaRunning, FaBalanceScale, FaHeartbeat, FaSchool, FaUsers, FaCamera } from 'react-icons/fa';
 
 // Styled Components
 const Container = styled.div`
@@ -118,13 +118,36 @@ const ImageContainer = styled.div`
   }
 `;
 
+const ImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const ImageLabel = styled.span`
+  font-size: 1rem;
+  color: #4b9fe1;
+  font-weight: 600;
+  
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+  }
+`;
+
 const ChildImage = styled.img`
   width: 300px;
   height: 300px;
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  }
   
   @media (max-width: 768px) {
     width: 250px;
@@ -135,6 +158,31 @@ const ChildImage = styled.img`
     width: 100%;
     max-width: 250px;
     height: auto;
+    aspect-ratio: 1/1;
+  }
+`;
+
+const ImagePlaceholder = styled.div`
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #1a2a6c 0%, #0a1128 100%);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  
+  @media (max-width: 768px) {
+    width: 250px;
+    height: 250px;
+  }
+  
+  @media (max-width: 576px) {
+    width: 100%;
+    max-width: 250px;
     aspect-ratio: 1/1;
   }
 `;
@@ -288,6 +336,7 @@ const ChildDetailsPage = () => {
         });
 
         if (response.data.statusCode === 200) {
+          console.log(response.data);
           setChildData(response.data.data);
         } else {
           setError(response.data.message || t('childDetails.error.fetching_data'));
@@ -300,7 +349,7 @@ const ChildDetailsPage = () => {
     };
 
     fetchChildDetails();
-  }, [id]);
+  }, [id, token.token, t]);
 
   const calculateAge = (dateString) => {
     const today = new Date();
@@ -370,6 +419,51 @@ const ChildDetailsPage = () => {
         </BasicInfo>
       </ProfileHeader>
 
+      {/* Child Images Section */}
+      {(childData.imageFrontURL || childData.imageSideURL) && (
+        <Section>
+          <SectionTitle>
+            <FaCamera /> {t('childDetails.sections.photos')}
+          </SectionTitle>
+          <ImageContainer>
+            {childData.imageFrontURL && (
+              <ImageWrapper>
+                <ImageLabel>{t('childDetails.images.front_view')}</ImageLabel>
+                <ChildImage 
+                  src={childData.imageFrontURL} 
+                  alt={`${childData.name} - Front View`}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <ImagePlaceholder style={{ display: 'none' }}>
+                  <FaCamera size={40} />
+                  <span>{t('childDetails.images.image_not_available')}</span>
+                </ImagePlaceholder>
+              </ImageWrapper>
+            )}
+            
+            {childData.imageSideURL && (
+              <ImageWrapper>
+                <ImageLabel>{t('childDetails.images.side_view')}</ImageLabel>
+                <ChildImage 
+                  src={childData.imageSideURL} 
+                  alt={`${childData.name} - Side View`}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <ImagePlaceholder style={{ display: 'none' }}>
+                  <FaCamera size={40} />
+                  <span>{t('childDetails.images.image_not_available')}</span>
+                </ImagePlaceholder>
+              </ImageWrapper>
+            )}
+          </ImageContainer>
+        </Section>
+      )}
 
       <Section>
         <SectionTitle>
@@ -391,6 +485,24 @@ const ChildDetailsPage = () => {
         </SectionTitle>
         <SportsContainer>
           <SportBadge key={1}>{i18n.language === 'ar' ? childData.categoryAr : childData.category}</SportBadge>
+        </SportsContainer>
+      </Section>
+
+      <Section>
+        <SectionTitle>
+          <FaRunning /> {t('childDetails.sections.parent_sports_history')}
+        </SectionTitle>
+        <SportsContainer>
+          <SportBadge key={1}>{i18n.language === 'ar' ? childData.parentSportHistoryAr : childData.parentSportHistory}</SportBadge>
+        </SportsContainer>
+      </Section>
+
+      <Section>
+        <SectionTitle>
+          <FaRunning /> {t('childDetails.sections.preferred_sports')}
+        </SectionTitle>
+        <SportsContainer>
+          <SportBadge key={1}>{i18n.language === 'ar' ? childData.preferredSportAr : childData.preferredSport}</SportBadge>
         </SportsContainer>
       </Section>
 
@@ -449,8 +561,6 @@ const ChildDetailsPage = () => {
           </SportsContainer>
         </Section>
       )}
-
-
     </Container>
   );
 };

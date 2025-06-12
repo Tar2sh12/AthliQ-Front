@@ -63,7 +63,7 @@
         "height": "Height is required",
         "weight": "Weight is required",
         "frontImage": "Front image is required",
-        "sideImage": "Back image is required",
+        "sideImage": "Side image is required",
         "ageRange": "Age must be between 6 and 9 years",
         "testRange": "Value must be between {{min}} and {{max}}"
       }

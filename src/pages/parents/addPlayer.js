@@ -556,7 +556,7 @@ const AddPlayerForm = () => {
     },
     {
       testName: t("addPlayer.testRanges.sitAndReach"),
-      max: 10,
+      max: 18,
       min: 0,
       gif: SitandReachFlexibility,
     },
@@ -780,7 +780,7 @@ const AddPlayerForm = () => {
     return errors;
   };
   const handleNext = async () => {
-    if (currentStep === 4 && currentTC < testsCategories.length - 1) {
+    if (currentStep === 4 && currentTC <= testsCategories.length - 1) {
 
       const testsToBeEntered = tests.filter(
         (test) => test.categoryId === testsCategories[currentTC].id

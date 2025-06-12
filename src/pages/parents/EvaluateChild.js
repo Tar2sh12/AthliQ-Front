@@ -497,6 +497,7 @@ const ChildCategoriesResultsPage = () => {
   const [childScores, setChildScores] = useState([]);
   const [matchedSports, setMatchedSports] = useState([]);
   const [bestCategory, setBestCategory] = useState("");
+  const [bestCategoryAr, setBestCategoryAr] = useState("");
   const [expandedSports, setExpandedSports] = useState({});
 
   const toggleSportDescription = (sportId) => {
@@ -559,10 +560,19 @@ const ChildCategoriesResultsPage = () => {
           setFinalResult(data.finalResult);
 
           // Extract the best category from finalResult
-          const bestCatMatch = data.finalResult.match(/Best Category is (.*)/);
-          if (bestCatMatch && bestCatMatch[1]) {
-            setBestCategory(bestCatMatch[1]);
-          }
+          var max= 0;
+          var finalCatObj={};
+          data.childResultIntegratedDto.forEach(category => {
+            if(category.score>max) {
+              max=category.score;
+              finalCatObj=category;
+              setBestCategory(category.category);
+              setBestCategoryAr(category.categoryAr);
+            }
+
+          })
+          
+
 
           // Set matched sports
           setMatchedSports(data.matchedSports || []);
@@ -597,10 +607,19 @@ const ChildCategoriesResultsPage = () => {
           setFinalResult(data.finalResult);
 
           // Extract the best category from finalResult
-          const bestCatMatch = data.finalResult.match(/Best Category is (.*)/);
-          if (bestCatMatch && bestCatMatch[1]) {
-            setBestCategory(bestCatMatch[1]);
-          }
+          var max= 0;
+          var finalCatObj={};
+          data.childResultIntegratedDto.forEach(category => {
+
+            
+            if(category.score>max) {
+              max=category.score;
+              setBestCategory(category.category);
+            setBestCategoryAr(category.categoryAr);
+            }
+
+          })
+          
 
           // Set matched sports
           setMatchedSports(data.matchedSports || []);
@@ -757,7 +776,7 @@ const ChildCategoriesResultsPage = () => {
                 evaluation="Very Good"
                 style={{ fontSize: "1.2rem", padding: "0.7rem 1.5rem" }}
               >
-                {bestCategory}
+                {i18n.language === "ar" ? bestCategoryAr: bestCategory}
               </EvaluationBadge>
 
               <p style={{ marginTop: "1.5rem", color: "#a9b3c1" }}>

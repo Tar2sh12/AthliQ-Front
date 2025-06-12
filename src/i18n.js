@@ -188,6 +188,7 @@ const resources = {
       auth: signInFormEn.auth,
       testsGrades: testsGradesEn,
       childDetails: {
+        
         navigation: {
           back: "Back",
           back_to_players: "Back to Players",
@@ -209,10 +210,13 @@ const resources = {
         images: {
           front_view: "Front view",
           side_view: "Side view",
+          image_not_available: "Image not available"
         },
         sections: {
+          photos: "Photos",
           physical_attributes: "Physical Attributes",
           recommended_category: "Recommended Category",
+
           recommended_sports: "Recommended Sports",
           test_results: "Test Results",
           preferred_sports: "Preferred Sports",
@@ -396,6 +400,7 @@ const resources = {
       auth: signInFormAr.auth,
       testsGrades: testsGradesAr,
       childDetails: {
+        
         navigation: {
           back: "رجوع",
           back_to_players: "العودة إلى اللاعبين",
@@ -417,8 +422,10 @@ const resources = {
         images: {
           front_view: "منظر أمامي",
           side_view: "منظر جانبي",
+          image_not_available: "صورة غير متاحة"
         },
         sections: {
+          photos: "الصور",
           physical_attributes: "الخصائص البدنية",
           recommended_category: "الفئة الموصى بها",
           recommended_sports: "الرياضات الموصى بها",
