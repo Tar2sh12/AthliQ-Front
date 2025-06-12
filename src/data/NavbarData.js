@@ -11,6 +11,7 @@ export const data = (t) => [
     id: t('about'),
     role: "not loggedin"
   },
+  
   {
     to: '/',
     text: '',
@@ -21,6 +22,11 @@ export const data = (t) => [
     to: '/',
     text: t('About'),
     role: 'User',
+  },
+  {
+    to:"/profilePage",
+    text:"Profile",
+    role:"User"
   },
   {
     to: '/children',
@@ -60,4 +66,5 @@ export const data = (t) => [
     text: t('Log In'),
     role: "not loggedin"
   },
+  
 ];

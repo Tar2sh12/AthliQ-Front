@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "backButton": "رجوع",
+    "personalInformation": "المعلومات الشخصية",
+    "children": "الأطفال",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "phoneNumber": "رقم الهاتف",
+    "gender": "الجنس",
+    "address": "العنوان",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "noDataFound": "لم يتم العثور على بيانات",
+    "errorFetchingUserData": "خطأ في جلب بيانات المستخدم",
+    "male": "ذكر",
+    "female": "أنثى"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "backButton": "Back",
+    "personalInformation": "Personal Information",
+    "children": "Children",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "gender": "Gender",
+    "address": "Address",
+    "loading": "Loading...",
+    "error": "Error",
+    "noDataFound": "No Data Found",
+    "errorFetchingUserData": "Error fetching user data",
+    "male": "Male",
+    "female": "Female"
+  }
+}

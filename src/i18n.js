@@ -11,6 +11,8 @@ import testsGradesEn from "./localize/testsGradesEn.json";
 import testsGradesAr from "./localize/testsGradesAr.json";
 import adminAcceptUsersAr from "./localize/acceptOrRejectAr.json";
 import adminAcceptUsersEn from "./localize/acceptOrRejectEn.json";
+import profileEn from "./localize/profileEn.json";
+import profileAr from "./localize/profileAr.json";
 const resources = {
   en: {
     translation: {
@@ -187,6 +189,7 @@ const resources = {
       addPlayer: addPlayerFormEn,
       auth: signInFormEn.auth,
       testsGrades: testsGradesEn,
+      profile: profileEn,
       childDetails: {
         
         navigation: {
@@ -399,6 +402,7 @@ const resources = {
       addPlayer: addPlayerFormAr,
       auth: signInFormAr.auth,
       testsGrades: testsGradesAr,
+      profile: profileAr,
       childDetails: {
         
         navigation: {
