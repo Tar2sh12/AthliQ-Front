@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IconContext } from "react-icons/lib";
-import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import { FaArrowCircleLeft, FaArrowCircleRight, FaSearch, FaUser, FaCalendarAlt } from "react-icons/fa";
 import styled from "styled-components";
 import { Row, Heading, TextWrapper } from "../../globalStyles";
 import {
@@ -8,53 +8,163 @@ import {
   ReviewSlider,
   CardButton,
 } from "../Carousel/CarouselStyles";
-import {
-  PricingSection,
-  PricingWrapper,
-  EmptyState,
-  PageButton,
-  PaginationContainer,
-  SearchContainer,
-  SearchInput,
-  PlayerCard,
-  PlayerInfoWrapper,
-} from "./PricingStyles";
 import { getAuthToken } from "../../services/auth";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-const Section = styled.section`
-  padding: ${({ padding }) => (padding ? padding : "140px 0")};
-  margin: ${({ margin }) => (margin ? margin : "")};
-  background: ${({ inverse }) => (inverse ? "white" : "#071c2f")};
-  position: ${({ position }) => (position ? position : "")};
-  width: ${({ width }) => (width ? width : "100%")};
-  min-width: ${({ minWidth }) => (minWidth ? minWidth : "auto")};
-  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : "1200px")};
-  height: ${({ height }) => (height ? height : "auto")};
-  max-height: ${({ maxHeight }) => (maxHeight ? maxHeight : "auto")};
-  min-height: ${({ minHeight }) => (minHeight ? minHeight : "auto")};
-
-  @media screen and (max-width: 1200px) {
-    max-width: 1000px;
-    padding: ${({ smPadding }) => (smPadding ? smPadding : "50px 40px")};
+// Updated styled components with ChildDetailsPage theme
+const PricingSection = styled.section`
+  background: #0a1128;
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  color: white;
+  
+  @media (max-width: 768px) {
+    padding: 3rem 1.5rem;
   }
-
-  @media screen and (max-width: 992px) {
-    max-width: 800px;
-  }
-
-  @media screen and (max-width: 768px) {
-    max-width: 90%;
-    padding: ${({ smPadding }) => (smPadding ? smPadding : "40px 30px")};
-  }
-
-  @media screen and (max-width: 576px) {
-    max-width: 95%;
-    padding: ${({ smPadding }) => (smPadding ? smPadding : "30px 20px")};
+  
+  @media (max-width: 576px) {
+    padding: 2.5rem 1rem;
   }
 `;
+
+const PricingWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+`;
+
+const Section = styled.section`
+  background: linear-gradient(135deg, #1a2a6c 0%, #0a1128 100%);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 1rem;
+  }
+`;
+
+const MainHeading = styled.h1`
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, #4b9fe1, #6a11cb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 1.8rem;
+  }
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+`;
+
+const SearchInput = styled.input`
+  background: rgba(26, 42, 108, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 400px;
+  outline: none;
+  transition: all 0.3s ease;
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  &:focus {
+    border-color: #4b9fe1;
+    box-shadow: 0 0 0 2px rgba(75, 159, 225, 0.2);
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+  }
+`;
+
+const PlayerCard = styled.div`
+  background: linear-gradient(135deg, #1a2a6c 0%, #0a1128 100%);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 0 0.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  @media (max-width: 576px) {
+    padding: 1.2rem;
+  }
+`;
+
+const PlayerInfoWrapper = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const PlayerName = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #4b9fe1;
+  font-weight: bold;
+  
+  @media (max-width: 576px) {
+    font-size: 1.3rem;
+  }
+`;
+
+const PlayerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+  }
+`;
+
+const CategoryBadge = styled.div`
+  background: linear-gradient(135deg, #00b09b, #96c93d);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: inline-block;
+  
+  @media (max-width: 576px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+`;
+
 const DetailsButton = styled.button`
   background: linear-gradient(to right, #4b6cb7, #182848);
   color: white;
@@ -63,18 +173,129 @@ const DetailsButton = styled.button`
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 1rem;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  width: 100%;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
   }
+  
+  @media (max-width: 576px) {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
 `;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 3rem 2rem;
+  color: rgba(255, 255, 255, 0.7);
+  
+  @media (max-width: 576px) {
+    padding: 2rem 1rem;
+  }
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+`;
+
+const Spinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(75, 159, 225, 0.3);
+  border-radius: 50%;
+  border-top-color: #4b9fe1;
+  animation: spin 1s ease-in-out infinite;
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+`;
+
+const PageButton = styled.button`
+  background: ${({ active }) => 
+    active 
+      ? 'linear-gradient(135deg, #4b9fe1, #6a11cb)' 
+      : 'rgba(26, 42, 108, 0.5)'
+  };
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: ${({ active }) => active ? '600' : '400'};
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #4b9fe1, #6a11cb);
+    transform: translateY(-2px);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  background: rgba(255, 65, 108, 0.2);
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  margin: 2rem 0;
+  border: 1px solid rgba(255, 65, 108, 0.5);
+  color: white;
+`;
+
+const NavigationButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const NavButton = styled.button`
+  background: linear-gradient(135deg, #4b9fe1, #6a11cb);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(75, 159, 225, 0.4);
+  }
+`;
+
 function Pricing() {
   const [sliderRef, setSliderRef] = useState(null);
   const [players, setPlayers] = useState([]);
@@ -86,6 +307,7 @@ function Pricing() {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+
   // Debounce search term
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -152,7 +374,7 @@ function Pricing() {
     slidesToShow: Math.min(3, players.length),
     slidesToScroll: 1,
     infinite: players.length >= 3,
-    arrows: players.length > 3,
+    arrows: false,
     focusOnSelect: false,
     accessibility: false,
     variableWidth: false,
@@ -201,10 +423,10 @@ function Pricing() {
   };
 
   return (
-    <IconContext.Provider value={{ color: "#a9b3c1", size: "1rem" }}>
+    <IconContext.Provider value={{ color: "#4b9fe1", size: "1.2rem" }}>
       <PricingSection id="pricing">
         <PricingWrapper>
-          <Heading>{t("Your Players")}</Heading>
+          <MainHeading>{t("Your Players")}</MainHeading>
 
           <SearchContainer>
             <SearchInput
@@ -216,112 +438,86 @@ function Pricing() {
           </SearchContainer>
 
           {loading ? (
-            <div style={{ color: "white" }}>{t("Loading...")}</div>
-          ) : players.length === 0 ? (
-            <div style={{ color: "white" }}>{t("No players found")}</div>
+            <LoadingContainer>
+              <Spinner />
+            </LoadingContainer>
           ) : error ? (
-            <div>{error}</div>
+            <ErrorMessage>{error}</ErrorMessage>
           ) : (
-            <>
-              <Section
-                margin="auto"
-                maxWidth="1500px"
-                padding="50px 70px"
-                inverse
-              >
-                <Row justify="space-between" margin="1rem" wrap="wrap">
-                  <Heading width="auto" inverse>
-                    {t("Your Players")}
-                  </Heading>
-                  {players.length > 3 && (
-                    <ButtonContainer>
-                      <IconContext.Provider
-                        value={{ size: "3rem", color: "#1d609c" }}
-                      >
-                        <FaArrowCircleLeft onClick={sliderRef?.slickPrev} />
-                        <FaArrowCircleRight onClick={sliderRef?.slickNext} />
-                      </IconContext.Provider>
-                    </ButtonContainer>
-                  )}
-                </Row>
-
-                {players.length === 0 ? (
-                  <EmptyState>
-                    <TextWrapper size="1.2rem" margin="1rem 0">
-                      {t("No players found. Add some players to get started!")}
-                    </TextWrapper>
-                  </EmptyState>
-                ) : (
-                  <ReviewSlider {...sliderSettings} ref={setSliderRef}>
-                    {players.map((el, index) => (
-                      <PlayerCard key={index}>
-                        <PlayerInfoWrapper>
-                          <TextWrapper
-                            size="1.5rem"
-                            margin="0.4rem 0 0"
-                            weight="bold"
-                          >
-                            {el.name}
-                          </TextWrapper>
-                          <TextWrapper
-                            size="1rem"
-                            margin="0.7rem"
-                            color="#4f4f4f"
-                          >
-                            {t(`${el.gender}`)}
-                          </TextWrapper>
-                          <TextWrapper
-                            size="1.1rem"
-                            margin="0.4rem 0 0"
-                            weight="bold"
-                          >
-                            {calculateAge(el.dateOfBirth)}
-                          </TextWrapper>
-                        </PlayerInfoWrapper>
-                        <CardButton>
-                          {i18n.language === "en" ? el.category : el.categoryAr}
-                        </CardButton>
-                        <DetailsButton
-                          onClick={() => navigate(`/childDetails/${el.id}`)}
-                        >
-                          {t("View Details")}
-                        </DetailsButton>
-                      </PlayerCard>
-                    ))}
-                  </ReviewSlider>
-                )}
-              </Section>
-
-              {totalPages > 1 && (
-                <PaginationContainer>
-                  <PageButton
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                  >
-                    {t("Previous")}
-                  </PageButton>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <PageButton
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        active={page === currentPage}
-                      >
-                        {page}
-                      </PageButton>
-                    )
-                  )}
-
-                  <PageButton
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                  >
-                    {t("Next")}
-                  </PageButton>
-                </PaginationContainer>
+            <Section>
+              {players.length > 3 && (
+                <NavigationButtons>
+                  <NavButton onClick={sliderRef?.slickPrev}>
+                    <FaArrowCircleLeft />
+                  </NavButton>
+                  <NavButton onClick={sliderRef?.slickNext}>
+                    <FaArrowCircleRight />
+                  </NavButton>
+                </NavigationButtons>
               )}
-            </>
+
+              {players.length === 0 ? (
+                <EmptyState>
+                  <FaUser size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
+                  <h3>{t("No players found")}</h3>
+                  <p>{t("Add some players to get started!")}</p>
+                </EmptyState>
+              ) : (
+                <ReviewSlider {...sliderSettings} ref={setSliderRef}>
+                  {players.map((el, index) => (
+                    <PlayerCard key={index}>
+                      <PlayerInfoWrapper>
+                        <PlayerName>{el.name}</PlayerName>
+                        <PlayerInfo>
+                          <FaUser /> {t(`${el.gender}`)}
+                        </PlayerInfo>
+                        <PlayerInfo>
+                          <FaCalendarAlt /> {calculateAge(el.dateOfBirth)}
+                        </PlayerInfo>
+                      </PlayerInfoWrapper>
+                      <CategoryBadge>
+                        {i18n.language === "en" ? el.category : el.categoryAr}
+                      </CategoryBadge>
+                      <DetailsButton
+                        onClick={() => navigate(`/childDetails/${el.id}`)}
+                      >
+                        {t("View Details")}
+                      </DetailsButton>
+                    </PlayerCard>
+                  ))}
+                </ReviewSlider>
+              )}
+            </Section>
+          )}
+
+          {totalPages > 1 && (
+            <PaginationContainer>
+              <PageButton
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                {t("Previous")}
+              </PageButton>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PageButton
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    active={page === currentPage}
+                  >
+                    {page}
+                  </PageButton>
+                )
+              )}
+
+              <PageButton
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                {t("Next")}
+              </PageButton>
+            </PaginationContainer>
           )}
         </PricingWrapper>
       </PricingSection>
