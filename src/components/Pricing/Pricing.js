@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { IconContext } from "react-icons/lib";
-import { FaArrowCircleLeft, FaArrowCircleRight, FaSearch, FaUser, FaCalendarAlt } from "react-icons/fa";
+import {
+  FaArrowCircleLeft,
+  FaArrowCircleRight,
+  FaSearch,
+  FaUser,
+  FaCalendarAlt,
+  FaTrash,
+} from "react-icons/fa";
 import styled from "styled-components";
 import { Row, Heading, TextWrapper } from "../../globalStyles";
 import {
@@ -19,11 +26,11 @@ const PricingSection = styled.section`
   min-height: 100vh;
   padding: 4rem 2rem;
   color: white;
-  
+
   @media (max-width: 768px) {
     padding: 3rem 1.5rem;
   }
-  
+
   @media (max-width: 576px) {
     padding: 2.5rem 1rem;
   }
@@ -42,11 +49,11 @@ const Section = styled.section`
   margin-bottom: 2rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   @media (max-width: 768px) {
     padding: 1.5rem;
   }
-  
+
   @media (max-width: 576px) {
     padding: 1rem;
   }
@@ -59,11 +66,11 @@ const MainHeading = styled.h1`
   background: linear-gradient(135deg, #4b9fe1, #6a11cb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
-  
+
   @media (max-width: 576px) {
     font-size: 1.8rem;
   }
@@ -86,16 +93,16 @@ const SearchInput = styled.input`
   max-width: 400px;
   outline: none;
   transition: all 0.3s ease;
-  
+
   &::placeholder {
     color: rgba(255, 255, 255, 0.6);
   }
-  
+
   &:focus {
     border-color: #4b9fe1;
     box-shadow: 0 0 0 2px rgba(75, 159, 225, 0.2);
   }
-  
+
   @media (max-width: 576px) {
     padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
@@ -111,12 +118,12 @@ const PlayerCard = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   text-align: center;
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   }
-  
+
   @media (max-width: 576px) {
     padding: 1.2rem;
   }
@@ -131,7 +138,7 @@ const PlayerName = styled.h3`
   margin-bottom: 0.5rem;
   color: #4b9fe1;
   font-weight: bold;
-  
+
   @media (max-width: 576px) {
     font-size: 1.3rem;
   }
@@ -145,7 +152,7 @@ const PlayerInfo = styled.div`
   margin: 0.5rem 0;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.8);
-  
+
   @media (max-width: 576px) {
     font-size: 0.9rem;
   }
@@ -158,7 +165,7 @@ const CategoryBadge = styled.div`
   font-weight: 600;
   margin-bottom: 1rem;
   display: inline-block;
-  
+
   @media (max-width: 576px) {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
@@ -184,7 +191,7 @@ const DetailsButton = styled.button`
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
   }
-  
+
   @media (max-width: 576px) {
     padding: 0.7rem 1.2rem;
     font-size: 0.9rem;
@@ -195,7 +202,7 @@ const EmptyState = styled.div`
   text-align: center;
   padding: 3rem 2rem;
   color: rgba(255, 255, 255, 0.7);
-  
+
   @media (max-width: 576px) {
     padding: 2rem 1rem;
   }
@@ -217,7 +224,9 @@ const Spinner = styled.div`
   animation: spin 1s ease-in-out infinite;
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -231,29 +240,28 @@ const PaginationContainer = styled.div`
 `;
 
 const PageButton = styled.button`
-  background: ${({ active }) => 
-    active 
-      ? 'linear-gradient(135deg, #4b9fe1, #6a11cb)' 
-      : 'rgba(26, 42, 108, 0.5)'
-  };
+  background: ${({ active }) =>
+    active
+      ? "linear-gradient(135deg, #4b9fe1, #6a11cb)"
+      : "rgba(26, 42, 108, 0.5)"};
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.8rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: ${({ active }) => active ? '600' : '400'};
-  
+  font-weight: ${({ active }) => (active ? "600" : "400")};
+
   &:hover:not(:disabled) {
     background: linear-gradient(135deg, #4b9fe1, #6a11cb);
     transform: translateY(-2px);
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
+
   @media (max-width: 576px) {
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
@@ -289,12 +297,27 @@ const NavButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &:hover {
     transform: scale(1.1);
     box-shadow: 0 5px 15px rgba(75, 159, 225, 0.4);
   }
 `;
+const ActionButtons = {
+  display: "flex",
+  gap: "0.5rem",
+};
+
+const ActionButton = {
+  background: "rgba(255, 255, 255, 0.1)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  borderRadius: "8px",
+  padding: "0.5rem",
+  color: "white",
+  cursor: "pointer",
+  transition: "all 0.3s ease",
+  fontSize: "0.9rem",
+};
 
 function Pricing() {
   const [sliderRef, setSliderRef] = useState(null);
@@ -323,8 +346,6 @@ function Pricing() {
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearchTerm]);
-
-  useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const token = getAuthToken();
@@ -366,6 +387,8 @@ function Pricing() {
         setLoading(false);
       }
     };
+  useEffect(() => {
+
 
     fetchPlayers();
   }, [currentPage, debouncedSearchTerm]);
@@ -458,7 +481,10 @@ function Pricing() {
 
               {players.length === 0 ? (
                 <EmptyState>
-                  <FaUser size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
+                  <FaUser
+                    size={48}
+                    style={{ marginBottom: "1rem", opacity: 0.5 }}
+                  />
                   <h3>{t("No players found")}</h3>
                   <p>{t("Add some players to get started!")}</p>
                 </EmptyState>
@@ -466,6 +492,54 @@ function Pricing() {
                 <ReviewSlider {...sliderSettings} ref={setSliderRef}>
                   {players.map((el, index) => (
                     <PlayerCard key={index}>
+                      <div style={ActionButtons}>
+                        <button
+                          style={ActionButton}
+                          onClick={async () => {
+                            if (
+                              window.confirm(
+                                "Are you sure you want to delete this child?"
+                              )
+                            ) {
+                              setLoading(true);
+                              const token = getAuthToken();
+                              try {
+                                // API call: DELETE /api/Test/DeleteTest?id=${testId}
+                                console.log(token.token, el.id);
+                                await axios.put(
+                                  `http://localhost:5155/api/Child/DeleteChild?childId=${el.id}`,null,
+                                  {
+                                    headers: {
+                                      Authorization: `Bearer ${token.token}`,
+                                    },
+                                  }
+                                ).then((response) => {
+                                  fetchPlayers();
+                                }).catch((error) => {
+                                  console.error(error);
+                                })
+
+                                fetchPlayers();
+                              } catch (error) {
+                                console.error("Error deleting child:", error);
+                              } finally {
+                                setLoading(false);
+                              }
+                            }
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.background =
+                              "rgba(220, 53, 69, 0.2)")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.background =
+                              "rgba(255, 255, 255, 0.1)")
+                          }
+                          title="Delete"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
                       <PlayerInfoWrapper>
                         <PlayerName>{el.name}</PlayerName>
                         <PlayerInfo>

@@ -16,7 +16,7 @@ import ChildrenPage from './pages/parents/ChildrenPage';
 import ChildTestResultsPage from './pages/parents/testsGrades.parent';
 import ChildCategoriesResultsPage from './pages/parents/EvaluateChild';
 import ChildDetailsPage from './pages/parents/childDetails.parent';
-import AdminDashboard from './pages/Admin/dashboard';
+// import AdminDashboard from './pages/Admin/dashboard';
 import UserRegistrationAdmin from './pages/Admin/acceptOrRejectUsers.admin';
 import AdminDashboardHome from './pages/Admin/home.admin';
 import CategoryManagement from './pages/Admin/categoryManagement.admin';
