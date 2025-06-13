@@ -1411,15 +1411,15 @@ const AddPlayerForm = () => {
                       return (
                         <FormGroup key={test.TestId}>
                           <FormLabel>
-                            {tests.find((t) => t.id === test.TestId)?.id}{" "}
+                            
                             {i18n.language == "en" &&
                               tests.find((t) => t.id === test.TestId)
                                 ?.name}{" "}
-                            *
+                            
                             {i18n.language == "ar" &&
                               tests.find((t) => t.id === test.TestId)
                                 ?.arabicName}{" "}
-                            *
+                            
                           </FormLabel>
                           <TestDescription $isRTL={isRTL}>
                             {i18n.language == "en" &&
