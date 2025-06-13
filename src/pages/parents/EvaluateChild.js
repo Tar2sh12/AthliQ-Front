@@ -533,6 +533,8 @@ const ChildCategoriesResultsPage = () => {
         if (response.data.statusCode === 200) {
           const data = response.data.data;
           saveDataToIndexedDB(data);
+          console.log(data);
+          
 
           // Set the evaluation response
           setEvaluateResponse(data);
@@ -581,6 +583,8 @@ const ChildCategoriesResultsPage = () => {
         } else {
           // toast.error(response.data.message);
           const data = await getDataFromIndexedDB();
+          console.log(data);
+          
           console.log(data);
           console.log(data.finalResult);
           setEvaluateResponse(data);
