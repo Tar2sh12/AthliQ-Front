@@ -66,7 +66,6 @@ const Form = () => {
       console.log(error);
     }
    
-    setSuccess('Application was submitted!');
     navigate('/login');
   };
 

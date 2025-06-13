@@ -69,7 +69,6 @@ const SignInForm = () => {
     setEmail("");
     setPassword("");
     setError(null);
-    setSuccess("Application was submitted!");
   };
 
   const messageVariants = {

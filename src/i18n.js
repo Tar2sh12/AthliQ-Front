@@ -128,6 +128,7 @@ const resources = {
       "Log In": "Log In",
       "Sign Up": "Sign Up",
       "Log Out": "Log Out",
+      "Profilee": "profile",
       Children: "Children",
       About: "About",
       // Instructions Page
@@ -340,6 +341,7 @@ const resources = {
       "Log In": "تسجيل الدخول",
       "Sign Up": "انشاء حساب",
       "Log Out": "تسجيل الخروج",
+      "Profile": "ملفك الشخصي",
       Children: "اللاعبين",
       About: "من نحن",
 

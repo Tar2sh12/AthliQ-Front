@@ -22,7 +22,7 @@ import AdminDashboardHome from './pages/Admin/home.admin';
 import CategoryManagement from './pages/Admin/categoryManagement.admin';
 import TestManagement from './pages/Admin/testManagement.admin';
 import SportManagement from './pages/Admin/sportsManagement.admin';
-import UserProfilePage from './pages/profilePage';
+import UserProfilePage from './pages/parents/profilePage';
 
 // Role-based protection components
 const ProtectedRoute = ({ children, requiredRole = null }) => {

@@ -12,7 +12,9 @@
         "errors": {
           "required": "This field is required",
           "invalidEmail": "Please enter a valid email",
-          "Admin didn't Accept Your Request Yet": "Admin didn't Accept Your Request Yet"
+          "Admin didn't Accept Your Request Yet": "Admin didn't Accept Your Request Yet",
+          "InCorrect Password":"InCorrect Password",
+          "Password needs to be 6 characters or more":"Password needs to be 6 characters or more"
         }
       }
     }

@@ -49,8 +49,10 @@ export const MobileIcon = styled.div`
     position: absolute;
     top: 0;
     ${(props) => (props.lang === "ar" ? "left: 0;" : "right: 0;")}
-    transform: ${(props) =>
-      props.lang === "ar" ? "translate(100%, 60%)" : "translate(-100%, 60%)"};
+    transform: ${props =>
+      props.lang === "ar" 
+        ? "translate(30%, 60%)" 
+        : "translate(-30%, 60%)"};
     font-size: 1.8rem;
     cursor: pointer;
   }
@@ -63,6 +65,7 @@ export const NavMenu = styled.ul`
   width: 100%;
 
   @media screen and (max-width: 960px) {
+    padding-top: 150px;
     flex-direction: column;
     width: 100%;
     height: 100vh;
@@ -137,20 +140,51 @@ export const NavBtnLink = styled(Link)`
 export const LanguageButton = styled.button`
   background: transparent;
   border: none;
-  color: white;
+  color: #89CFF0;
   cursor: pointer;
   font-size: 1rem;
-  margin-right: 20px;
   padding: 8px 12px;
   border-radius: 4px;
   transition: all 0.3s ease;
+  z-index: 60;
+  position: relative;
+  margin: 0 10px;
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
 
-  @media screen and (max-width: 768px) {
-    margin-right: 10px;
-    padding: 6px 10px;
+  /* Desktop positioning */
+  @media screen and (min-width: 961px) {
+    position: static;
+    margin-right: ${props => props.lang === 'en' ? '20px' : '0'};
+    margin-left: ${props => props.lang === 'ar' ? '20px' : '0'};
   }
-`;
+
+  /* Mobile positioning */
+  @media screen and (max-width: 960px) {
+    position: absolute;
+    top: 20px;
+    ${props => props.lang === 'en' ? 'right: 60px;' : 'left: 60px;'}
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    
+    /* When menu is open */
+    ${props => props.showMenu && `
+      ${props.lang === 'en' ? 'right: calc(100% - 120px);' : 'left: calc(100% - 120px);'}
+    `}
+  }
+
+  /* Small mobile devices */
+  @media screen and (max-width: 480px) {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    ${props => props.lang === 'en' ? 'right: 50px;' : 'left: 50px;'}
+    
+    ${props => props.showMenu && `
+      ${props.lang === 'en' ? 'right: calc(100% - 100px);' : 'left: calc(100% - 100px);'}
+    `}
+  }
+`;  

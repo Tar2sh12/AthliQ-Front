@@ -25,7 +25,7 @@ export const data = (t) => [
   },
   {
     to:"/profilePage",
-    text:"Profile",
+    text:t("Profile"),
     role:"User"
   },
   {

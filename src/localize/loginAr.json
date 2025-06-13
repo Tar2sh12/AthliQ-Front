@@ -13,7 +13,9 @@
           "required": "هذا الحقل مطلوب",
           "invalidEmail": "الرجاء إدخال بريد إلكتروني صحيح"
           ,
-          "Admin didn't Accept Your Request Yet": "لم يقبل الادمن طلبك بعد"
+          "Admin didn't Accept Your Request Yet": "لم يقبل الادمن طلبك بعد",
+          "InCorrect Password":"خطاء في كلمة المرور",
+          "Password needs to be 6 characters or more":"كلمة المرور يجب ان تكون 6 حروف على الاقل"
         }
       }
     }

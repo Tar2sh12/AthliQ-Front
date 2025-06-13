@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { getAuthToken } from '../services/auth';
+import { getAuthToken } from '../../services/auth';
 import axios from 'axios';
 import { 
-  FaArrowLeft, 
   FaUser, 
   FaEnvelope, 
   FaPhone, 
   FaMapMarkerAlt, 
   FaVenus, 
   FaMars, 
-  FaChild,
-  FaUserCircle 
 } from 'react-icons/fa';
 
 // Styled Components
@@ -28,39 +25,11 @@ const Container = styled.div`
   }
   
   @media (max-width: 576px) {
-    padding: 2.5rem 1rem 1rem;
+    padding: 5rem 1rem 1rem;
   }
 `;
 
-const BackButton = styled.button`
-  background: linear-gradient(to right, #4b6cb7, #182848);
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  transition: all 0.3s ease;
-  position: absolute;
-  top: 1.5rem;
-  left: 2rem;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
-  }
-
-  @media (max-width: 768px) {
-    top: 1rem;
-    left: 1rem;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-  }
-`;
 
 const ProfileHeader = styled.div`
   display: flex;

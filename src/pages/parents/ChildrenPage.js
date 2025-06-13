@@ -18,7 +18,8 @@ const ChildrenPage = () => {
       minHeight: '100vh',
       padding: '4rem 2rem',
       color: 'white',
-      textAlign: 'center'
+      textAlign: 'center',
+      paddingTop: '8rem'
     }}>
       <h1 style={{
         fontSize: '2.5rem',

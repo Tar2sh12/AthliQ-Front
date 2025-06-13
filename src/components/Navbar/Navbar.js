@@ -84,13 +84,13 @@ const Navbar = () => {
     <IconContext.Provider value={{ color: "#fff" }}>
       <Nav>
         <NavbarContainer>
-          <NavLogo to={userRole==="Admin"?"/adminHomePage":"/"}>
+          {!show&&<NavLogo to={userRole === "Admin" ? "/adminHomePage" : "/"}>
             <NavIcon
               src={i18n.language === "en" ? englishLogo : arabicLogo}
               style={{ width: "190px" }}
               alt="logo"
             />
-          </NavLogo>
+          </NavLogo>}
 
           {/* Language Toggle Button */}
           {/* <LanguageButton onClick={toggleLanguage}>
@@ -98,9 +98,15 @@ const Navbar = () => {
           </LanguageButton>
            */}
 
-         {userRole!=="Admin" && <LanguageButton onClick={toggleLanguage}>
-            {currentLanguage === "en" ? "English" : "العربية"}
-          </LanguageButton>}
+          {userRole !== "Admin" && (
+            <LanguageButton
+              onClick={toggleLanguage}
+              lang={currentLanguage}
+              showMenu={show}
+            >
+              {currentLanguage === "en" ? "English" : "العربية"}
+            </LanguageButton>
+          )}
 
           <MobileIcon onClick={handleClick} lang={currentLanguage}>
             {show ? <FaTimes /> : <CgMenuRight />}

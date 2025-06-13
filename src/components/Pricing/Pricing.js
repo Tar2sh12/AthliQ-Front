@@ -32,7 +32,7 @@ const PricingSection = styled.section`
   }
 
   @media (max-width: 576px) {
-    padding: 2.5rem 1rem;
+    padding: 6rem 1rem;
   }
 `;
 
